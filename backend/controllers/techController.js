@@ -7,7 +7,7 @@ const Tech = require('../models/techSchema')
 // Route: POST /api/v1/techs
 // Access: Public
 const registerTech = asyncHandler( async (req, res) => {
-    const {name, email, password} = req.body
+    const {name, email, password, techRole} = req.body
     
     // Make sure all the information was sent in the body
     if (!name || !email || !password) {
@@ -29,9 +29,10 @@ const registerTech = asyncHandler( async (req, res) => {
 
     // Create the Tech
     const tech = await Tech.create({
-        name, 
+        name,
         email, 
-        password: hashedPassword
+        password: hashedPassword,
+        techRole
     })
     console.log(tech)
 
@@ -40,6 +41,7 @@ const registerTech = asyncHandler( async (req, res) => {
             _id: tech.id,
             name: tech.name,
             email: tech.email,
+            techRole: tech.techRole,
             token: generateToken(tech._id)
 
         })
@@ -63,6 +65,7 @@ const loginTech = asyncHandler( async (req, res) => {
             _id: tech.id,
             name: tech.name,
             email: tech.email,
+            role: tech.role,
             token: generateToken(tech._id)
         })
     } else {
@@ -76,13 +79,47 @@ const loginTech = asyncHandler( async (req, res) => {
 // Route: POST /api/v1/techs/me
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
-    const {_id, name, email} = await Tech.findById(req.tech.id)
+    const {_id, name, email, techRole} = await Tech.findById(req.tech.id)
 
     res.status(200).json({
         id: _id,
         name,
-        email
+        email,
+        techRole
     })
+})
+
+// Decription: Edit the tech
+// Route: PUT /api/v1/techs/edit/:id
+// Access: Private to admin only
+const editTech = asyncHandler(async (req, res) => {
+    // Find the tech to be changed
+    const editTech = await Tech.findById(req.params.id)
+
+    if(!editTech) {
+        res.status(400)
+        throw new Error('That tech was not found')
+    }
+
+    // Confirm that the tech making the change has admin role
+    console.log(req)
+    const adminTech = await Tech.findById(req.tech.id)
+
+    // Double check that there is a user
+    if (!adminTech) {
+        res.status(401)
+        throw new Error('Tech not found')
+    }
+
+    // Make sure the user is allowed to edit the invoice
+    if (adminTech.techRole.toString() !== 'admin') {
+        res.status(401)
+        throw new Error('You do not have permission to make this change.')
+    }
+
+    const updatedTech = await Tech.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+    res.status(200).json(updatedTech)
 })
 
 // Generate JWT
@@ -95,5 +132,6 @@ const generateToken = (id) => {
 module.exports = {
     registerTech,
     loginTech,
-    getTech
+    getTech,
+    editTech
 }

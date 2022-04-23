@@ -22,13 +22,17 @@ const createInvoice = asyncHandler(async (req, res) => {
 
 // Decription: Gets all of the invoices for user (all if admin) (organize and sort on frontend)
 // Route: GET /api/v1/invoice
-// Access: Private to author and admin/manager
+// Access: Private to author or admin
 const getInvoice = asyncHandler(async (req, res) => {
+    const tech = await Tech.findById(req.tech.id)
 
-    //** add if admin statement to bypass the individual user
-    const invoice = await Invoice.find({techId: req.tech.id})
-
-    res.status(200).json(invoice)
+    if (tech.techRole === 'admin') {
+        const invoice = await Invoice.find()
+        res.status(200).json(invoice)
+    } else {
+        const invoice = await Invoice.find({techId: req.tech.id})
+        res.status(200).json(invoice)
+    }
 })
 
 // Decription: Gets a single invoice (organize and sort on frontend)
@@ -50,8 +54,8 @@ const singleInvoice = asyncHandler(async (req, res) => {
         throw new Error('User not found')
     }
 
-    // Make sure the user is allowed to edit the invoice
-    if (getSingle.techId.toString() !== tech.id) {
+    // Make sure the user is allowed to view the invoice
+    if (getSingle.techId.toString() !== tech.id && tech.techRole !== 'admin') {
         res.status(401)
         throw new Error('You do not have permission to view this invoice.')
     }
@@ -79,7 +83,7 @@ const editInvoice = asyncHandler(async (req, res) => {
     }
 
     // Make sure the user is allowed to edit the invoice
-    if (invoice.techId.toString() !== tech.id) {
+    if ((invoice.techId.toString() !== tech.id) && (tech.techRole !== 'admin')) {
         res.status(401)
         throw new Error('You do not have permission to view this invoice.')
     }
@@ -111,7 +115,7 @@ const deleteInvoice = asyncHandler(async (req, res) => {
     }
 
     // Make sure the user is allowed to edit the invoice
-    if (invoice.techId.toString() !== tech.id) {
+    if ((invoice.techId.toString() !== tech.id) && (tech.techRole !== 'admin')) {
         res.status(401)
         throw new Error('You can not delete an invoice that does not belong to you.')
     }

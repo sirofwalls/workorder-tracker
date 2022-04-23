@@ -4,7 +4,8 @@ const router = express.Router();
 const {
     registerTech,
     loginTech,
-    getTech
+    getTech,
+    editTech
 } = require('../controllers/techController')
 
 const {protect} = require('../middleware/authMiddleware')
@@ -12,5 +13,6 @@ const {protect} = require('../middleware/authMiddleware')
 router.post('/', registerTech)
 router.post('/login', loginTech)
 router.get('/me', protect, getTech)
+router.put('/edit/:id', protect, editTech)
 
 module.exports = router;

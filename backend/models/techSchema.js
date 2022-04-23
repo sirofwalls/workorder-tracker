@@ -5,6 +5,11 @@ const techSchema = mongoose.Schema({
         type: String,
         required: [true, "Please add a name"]
     },
+    techRole: {
+        type: String,
+        enum: ['user', 'admin'],
+        default: 'user'
+    },
     email: {
         type: String,
         required: [true, 'Please add an email'],
