@@ -17,7 +17,9 @@ const techSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, "Please incluse a password"]
+        required: [true, "Please incluse a password"],
+        minLength: [8, 'Password must be between 8 and 24 characters in length'],
+        maxLength: [24, 'Password must be between 8 and 24 characters in length']
     }
 }, {
     timestamps: true,

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+// Constrollers to easily manage the logic of the request
 const {
     registerTech,
     loginTech,
@@ -10,6 +11,7 @@ const {
 
 const {protect} = require('../middleware/authMiddleware')
 
+// Example Route: domain.com/api/v1/techs
 router.post('/', registerTech)
 router.post('/login', loginTech)
 router.get('/me', protect, getTech)
