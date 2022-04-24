@@ -3,7 +3,7 @@ const colors = require('colors'); // To make pretty colors in the console. Not n
 const dotenv = require('dotenv').config();
 const port = process.env.PORT || 5000;
 const {errorHandler} = require('./backend/middleware/errorMiddleware');
-const connectDB = require('./config/db');
+const connectDB = require('./backend/config/db');
 const app = express();
 const url = '/api/v1/'; // All requests will need to start with this. (domain.com/[insert this const here])
 

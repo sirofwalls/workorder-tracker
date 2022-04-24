@@ -31,17 +31,12 @@ const registerTech = asyncHandler( async (req, res) => {
     const tech = await Tech.create({
         name,
         email, 
-        password: hashedPassword,
-        techRole
+        password: hashedPassword
     })
     console.log(tech)
 
     if (tech) {
         res.status(201).json({
-            _id: tech.id,
-            name: tech.name,
-            email: tech.email,
-            techRole: tech.techRole,
             token: generateToken(tech._id)
 
         })
@@ -62,10 +57,6 @@ const loginTech = asyncHandler( async (req, res) => {
 
     if (tech && (await bcrypt.compare(password, tech.password))) {
         res.json({
-            _id: tech.id,
-            name: tech.name,
-            email: tech.email,
-            role: tech.role,
             token: generateToken(tech._id)
         })
     } else {
