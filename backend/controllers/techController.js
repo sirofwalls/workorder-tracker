@@ -37,8 +37,11 @@ const registerTech = asyncHandler( async (req, res) => {
 
     if (tech) {
         res.status(201).json({
+            _id: tech.id,
+            name: tech.name,
+            email: tech.email,
+            role: tech.techRole,
             token: generateToken(tech._id)
-
         })
     } else {
         res.status(400)
@@ -57,6 +60,10 @@ const loginTech = asyncHandler( async (req, res) => {
 
     if (tech && (await bcrypt.compare(password, tech.password))) {
         res.json({
+            _id: tech.id,
+            name: tech.name,
+            email: tech.email,
+            role: tech.techRole,
             token: generateToken(tech._id)
         })
     } else {
@@ -116,7 +123,7 @@ const editTech = asyncHandler(async (req, res) => {
 // Generate JWT
 const generateToken = (id) => {
     return jwt.sign({id}, process.env.JWT_SECRET, {
-        expiresIn: '1d'
+        expiresIn: '30d'
     })
 }
 

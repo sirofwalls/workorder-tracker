@@ -1,5 +1,10 @@
 import {useState, useEffect} from 'react'
 import {FaSignInAlt} from 'react-icons/fa'
+import {useSelector, useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import {login, reset} from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
 
 
 function Login() {
@@ -10,6 +15,24 @@ function Login() {
     })
 
     const {email, password} = formData
+
+    // Initialize navigate and dispatch
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const {tech, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth)
+
+    // Looks for changes and checks if there is an error. If successful it will redirect to the root directory. Will run reset function either way.
+    useEffect(() => {
+        if (isError) {
+            toast.error(message)
+        }
+        if (isSuccess || tech) {
+            navigate('/')
+        }
+
+        dispatch(reset())
+    }, [tech, isError, isSuccess, message, navigate, dispatch])
 
     // Function to control the state of the itmes being typed
     const onChange = (e) => {
@@ -22,6 +45,17 @@ function Login() {
     // Control the submit action for the form
     const onSubmit = (e) => {
         e.preventDefault()
+
+        const techData = {
+            email,
+            password
+        }
+
+        dispatch(login(techData))
+    }
+
+    if (isLoading) {
+        return <Spinner />
     }
 
     return (

@@ -1,9 +1,15 @@
 import {useState, useEffect} from 'react'
 import {FaUser} from 'react-icons/fa'
+import {useSelector, useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
+import {toast} from 'react-toastify'
+import {register, reset} from '../features/auth/authSlice'
+import Spinner from '../components/Spinner'
+
 
 
 function Register() {
-    // State for the form
+    // State handler for the form
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -12,6 +18,24 @@ function Register() {
     })
 
     const {name, email, password, password2} = formData
+
+    // Initialize navigate and dispatch
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const {tech, isLoading, isError, isSuccess, message} = useSelector((state) => state.auth)
+
+    // Looks for changes and checks if there is an error. If successful it will redirect to the root directory. Will run reset function either way.
+    useEffect(() => {
+        if (isError) {
+            toast.error(message)
+        }
+        if (isSuccess || tech) {
+            navigate('/')
+        }
+
+        dispatch(reset())
+    }, [tech, isError, isSuccess, message, navigate, dispatch])
 
     // Function to control the state of the itmes being typed
     const onChange = (e) => {
@@ -24,6 +48,20 @@ function Register() {
     // Control the submit action for the form
     const onSubmit = (e) => {
         e.preventDefault()
+
+        if(password !== password2) {
+            toast.error('Password do not match')
+        } else if (password.length < 8 || password.length > 24) {
+            toast.error('Password must be between 8 and 24 characters in length')
+        } else {
+            // If the password match in the form send the userdata to register function
+            const userData = {name, email, password}
+            dispatch(register(userData))
+        }
+    }
+
+    if (isLoading) {
+        return <Spinner />
     }
 
     return (
