@@ -77,14 +77,8 @@ const loginTech = asyncHandler( async (req, res) => {
 // Route: POST /api/v1/techs/me
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
-    const {_id, name, email, techRole} = await Tech.findById(req.tech.id)
 
-    res.status(200).json({
-        id: _id,
-        name,
-        email,
-        techRole
-    })
+    res.status(200).json(req.user)
 })
 
 // Decription: Edit the tech

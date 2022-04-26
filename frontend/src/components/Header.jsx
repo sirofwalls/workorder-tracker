@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice} from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
@@ -19,6 +19,11 @@ function Header() {
         navigate('/')
     }
 
+    // Link to navigate to Invoice page... there should be a better way
+    const invoicePage = () => {
+        navigate('/invoice')
+    }
+
     return (
     <header className='header'>
         <div className="logo">
@@ -26,11 +31,19 @@ function Header() {
         </div>
         <ul>
             {tech ? (
+                <>
+                <li>
+                    <button className='btn' onClick={invoicePage}>
+                        <FaFileInvoice /> Create Invoice
+                    </button>
+                </li>
                 <li>
                     <button className='btn' onClick={onLogout}>
                         <FaSignOutAlt /> Log Out
                     </button>
                 </li>
+                </>
+                
             ) : (
                 <>
                 <li>

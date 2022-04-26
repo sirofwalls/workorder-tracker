@@ -24,9 +24,8 @@ const createInvoice = asyncHandler(async (req, res) => {
 // Route: GET /api/v1/invoice
 // Access: Private to author or admin
 const getInvoice = asyncHandler(async (req, res) => {
-    const tech = await Tech.findById(req.tech.id)
 
-    if (tech.techRole === 'admin') {
+    if (req.tech.techRole === 'admin') {
         const invoice = await Invoice.find()
         res.status(200).json(invoice)
     } else {
@@ -74,10 +73,8 @@ const editInvoice = asyncHandler(async (req, res) => {
         throw new Error('That invoice was not found')
     }
 
-    const tech = await Tech.findById(req.tech.id)
-
     // Double check that there is a user
-    if (!tech) {
+    if (!req.tech) {
         res.status(401)
         throw new Error('User not found')
     }
@@ -106,10 +103,8 @@ const deleteInvoice = asyncHandler(async (req, res) => {
         throw new Error('That invoice was not found')
     }
 
-    const tech = await Tech.findById(req.tech.id)
-
     // Double check that there is a user
-    if (!tech) {
+    if (!req.tech) {
         res.status(401)
         throw new Error('User not found')
     }

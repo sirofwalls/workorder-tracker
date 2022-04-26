@@ -11,11 +11,6 @@ const reqBool = {
     default: false
 }
 
-const reqDate = {
-    type: Date,
-    default: Date.now()
-}
-
 const scehmaNumber = {
     type: Number,
     default: 0
@@ -38,13 +33,17 @@ const InvoiceSchema = new mongoose.Schema({
 
     clientNumber: {
         type: Number,
-        required: true
+        default: 01
     },
     clientName: reqString,
 
-    startTime: reqDate,
+    startTime: {
+        type: String
+    },
 
-    endTime: reqDate,
+    endTime: {
+        type: String
+    },
 
     milesTraveled: scehmaNumber,
 
