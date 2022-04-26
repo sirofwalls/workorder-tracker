@@ -16,7 +16,7 @@ export const createInvoice = createAsyncThunk('invoices/create', async (invoiceD
         return await invoiceService.createInvoice(invoiceData, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
-        const message = (error.response && error.reponse.data && error.response.data.message) || error.messsage || error.toString()
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
@@ -28,11 +28,22 @@ export const getInvoices = createAsyncThunk('invoices/getAll', async (_, thunkAP
         return await invoiceService.getInvoices(token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
-        const message = (error.response && error.reponse.data && error.response.data.message) || error.messsage || error.toString()
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
-}
-)
+})
+
+// Delete a single invoice
+export const deleteInvoice = createAsyncThunk('invoices/delete', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.tech.token
+        return await invoiceService.deleteInvoice(id, token)
+    } catch (error) {
+        // Sends error as message if there was a problem registering the user
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
 
 export const invoiceSlice = createSlice({
     name: 'invoice',
@@ -64,6 +75,19 @@ export const invoiceSlice = createSlice({
             state.invoices = action.payload
         })
         .addCase(getInvoices.rejected, (state, action) => {
+            state.isLoading = false
+            state.isError = true
+            state.message = action.payload
+        })
+        .addCase(deleteInvoice.pending, (state) => {
+            state.isLoading = true
+        })
+        .addCase(deleteInvoice.fulfilled, (state, action) => {
+            state.isLoading = false
+            state.isSuccess = true
+            state.invoices = state.invoices.filter((invoice) => invoice._id !== action.payload.id)
+        })
+        .addCase(deleteInvoice.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload

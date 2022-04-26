@@ -31,10 +31,6 @@ const InvoiceSchema = new mongoose.Schema({
     },
     techName: reqString,
 
-    clientNumber: {
-        type: Number,
-        default: 01
-    },
     clientName: reqString,
 
     startTime: {

@@ -33,7 +33,6 @@ const registerTech = asyncHandler( async (req, res) => {
         email, 
         password: hashedPassword
     })
-    console.log(tech)
 
     if (tech) {
         res.status(201).json({
@@ -94,7 +93,6 @@ const editTech = asyncHandler(async (req, res) => {
     }
 
     // Confirm that the tech making the change has admin role
-    console.log(req)
     const adminTech = await Tech.findById(req.tech.id)
 
     // Double check that there is a user

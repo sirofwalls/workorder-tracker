@@ -19,7 +19,7 @@ export const register = createAsyncThunk('auth/register', async (tech, thunkAPI)
         return await authService.register(tech)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
-        const message = (error.response && error.reponse.data && error.response.data.message) || error.messsage || error.toString()
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
@@ -31,14 +31,14 @@ export const login = createAsyncThunk('auth/login', async (tech, thunkAPI) => {
         return await authService.login(tech)
     } catch (error) {
         // Sends error as message if there was a problem logging in
-        const message = (error.response && error.reponse.data && error.response.data.message) || error.messsage || error.toString()
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
         return thunkAPI.rejectWithValue(message)
     }
 })
 
 // Log out the tech
 export const logout = createAsyncThunk('auth/logout', async () => {
-    await authService.logout()
+    authService.logout()
 })
 
 // Slice to call the reset functionality when needed for the state

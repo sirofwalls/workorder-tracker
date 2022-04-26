@@ -14,8 +14,8 @@ function Header() {
 
     // Log out button function
     const onLogout = () => {
-        dispatch(logout())
         dispatch(reset())
+        dispatch(logout())
         navigate('/')
     }
 

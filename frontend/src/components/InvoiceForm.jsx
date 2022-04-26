@@ -78,7 +78,7 @@ function InvoiceForm() {
             </div>
             <div className="form-group">
                 <label htmlFor="startTime">Start Time</label>
-                <input type="time" name='startTime' id='startTime' value={startTime} onChange={onChange} />
+                <input type="time" name='startTime' id='startTime' value={startTime} onChange={onChange} required/>
             </div>
             <div className="form-group">
                 <label htmlFor="endTime">End Time</label>
@@ -98,7 +98,7 @@ function InvoiceForm() {
             </div>
             <div className="form-group">
                 <label htmlFor="jobNotes">Job Notes (Work on Site)</label>
-                <textarea type="textarea" name='jobNotes' id='jobNotes' value={jobNotes} onChange={onChange} />
+                <textarea type="textarea" name='jobNotes' id='jobNotes' value={jobNotes} onChange={onChange} required />
             </div>
             <div className="form-group">
                 <label htmlFor="verifyNetwork">Verify Network</label>

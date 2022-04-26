@@ -1,6 +1,5 @@
 const asyncHandler = require('express-async-handler')
 const Invoice = require('../models/invoiceSchema')
-const Tech = require('../models/techSchema')
 
 
 // Decription: Set/Create the Invoice
@@ -110,13 +109,13 @@ const deleteInvoice = asyncHandler(async (req, res) => {
     }
 
     // Make sure the user is allowed to edit the invoice
-    if ((invoice.techId.toString() !== tech.id) && (tech.techRole !== 'admin')) {
+    if ((invoice.techId.toString() !== req.tech.id) && (req.tech.techRole !== 'admin')) {
         res.status(401)
         throw new Error('You can not delete an invoice that does not belong to you.')
     }
 
     await Invoice.findByIdAndDelete(req.params.id)
-    res.status(200).json({message: `Deleted invoice ${req.params.id}`})
+    res.status(200).json({id: req.params.id})
 }) 
 
 module.exports = {
