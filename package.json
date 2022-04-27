@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "back": "nodemon index.js",
+    "back": "nodemon backend/index.js",
     "front": "npm start --prefix frontend",
     "dev": "concurrently \"npm run back\" \"npm run front\""
   },
