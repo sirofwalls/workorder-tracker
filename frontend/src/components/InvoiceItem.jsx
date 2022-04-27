@@ -1,11 +1,27 @@
 import {FaTrashAlt} from 'react-icons/fa'
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {deleteInvoice} from '../features/invoices/invoiceSlice'
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 function InvoiceItem({invoice, tech}) {
     const dispatch = useDispatch()
 
-    // const {tech} = useSelector((state) => state.auth)
+    const onDelete = () =>
+    confirmAlert({
+        title: 'Confirm to submit',
+        message: 'Are you sure to do this.',
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => dispatch(deleteInvoice(invoice._id))
+          },
+          {
+            label: 'No',
+          }
+        ]
+      })
 
     return (
     <div className="invoice">
@@ -13,7 +29,7 @@ function InvoiceItem({invoice, tech}) {
             {(
                 tech.id === invoice.id || tech.role === 'admin'
             ) ? (
-                <button onClick={() => dispatch(deleteInvoice(invoice._id))} className="close"><FaTrashAlt/></button>
+                <button onClick={onDelete} className="close"><FaTrashAlt/></button>
             ) : (<></>)}
 
             {new Date(invoice.createdAt).toLocaleDateString('en-US')}

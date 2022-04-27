@@ -10,7 +10,7 @@ function Invoice() {
   const dispatch = useDispatch()
 
   const {tech} = useSelector((state) => state.auth)
-  const {invoices, isLoading, isError, message} = useSelector((state) => state.invoices)
+  const {isLoading, isError, message} = useSelector((state) => state.invoices)
 
   useEffect(() => {
     if (isError) {

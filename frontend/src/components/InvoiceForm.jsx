@@ -1,10 +1,12 @@
 import {useState} from 'react'
 import {useDispatch} from 'react-redux'
+import {useNavigate} from 'react-router-dom'
 import {createInvoice} from '../features/invoices/invoiceSlice'
 
 
 function InvoiceForm() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         clientName: '',
@@ -66,7 +68,7 @@ function InvoiceForm() {
             speedUp: 0,
             speedDown: 0
         })
-
+        navigate('/')
     }
 
     return (
