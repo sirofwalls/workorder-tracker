@@ -5,7 +5,6 @@ import InvoiceItem from '../components/InvoiceItem'
 import Spinner from '../components/Spinner'
 import { getInvoices, reset } from '../features/invoices/invoiceSlice'
 import { CSVLink } from "react-csv"
-import moment from 'moment'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -32,7 +31,7 @@ function Dashboard() {
   ]
   
   // Takes the invoices from the state and formats the date for the CSV
-  const data = invoices.map(row => ({...row, createdAt: moment(row.createdAt).format("YYYY-MM-DD")}))
+  const data = invoices.map(row => ({...row, createdAt: new Date(row.createdAt).toLocaleDateString('en-US')}))
 
   useEffect(() => {
     if (!tech) {
