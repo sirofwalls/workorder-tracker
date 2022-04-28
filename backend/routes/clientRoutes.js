@@ -12,7 +12,7 @@ const {protect} = require('../middleware/authMiddleware')
 
 // Example Route: domain.com/api/v1/client
 router.get('/', protect, getClient)
-router.post('/add', protect, registerClient)
+router.post('/', protect, registerClient)
 router.delete('/delete/:id', protect, deleteClient)
 
 module.exports = router;

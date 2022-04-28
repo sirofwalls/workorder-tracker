@@ -1,19 +1,31 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import invoiceService from './invoiceService'
+import clientService from './clientService'
 
 const initialState = {
-    invoices: [],
+    clients: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: ''
 }
 
-// Create new invoice
-export const createInvoice = createAsyncThunk('invoices/create', async (invoiceData, thunkAPI) => {
+// Create new Client
+export const createClient = createAsyncThunk('clients/create', async (clientData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.createInvoice(invoiceData, token)
+        return await clientService.createClient(clientData, token)
+    } catch (error) {
+        // Sends error as message if there was a problem registering the client
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// Get the Clients
+export const getClients = createAsyncThunk('clients/getAll', async (_, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.tech.token
+        return await clientService.getClients(token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -21,11 +33,11 @@ export const createInvoice = createAsyncThunk('invoices/create', async (invoiceD
     }
 })
 
-// Get the Invoices
-export const getInvoices = createAsyncThunk('invoices/getAll', async (_, thunkAPI) => {
+// Delete the Clients
+export const deleteClient = createAsyncThunk('clients/delete', async (id, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.getInvoices(token)
+        return await clientService.deleteClient(id, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -33,61 +45,52 @@ export const getInvoices = createAsyncThunk('invoices/getAll', async (_, thunkAP
     }
 })
 
-// Delete a single invoice
-export const deleteInvoice = createAsyncThunk('invoices/delete', async (id, thunkAPI) => {
-    try {
-        const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.deleteInvoice(id, token)
-    } catch (error) {
-        // Sends error as message if there was a problem registering the user
-        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
-        return thunkAPI.rejectWithValue(message)
-    }
-})
 
-export const invoiceSlice = createSlice({
-    name: 'invoice',
+// Slice to call the reset functionality when needed for the state
+export const clientSlice = createSlice({
+    name: 'client',
     initialState,
     reducers: {
+        // Resets the states to default values
         reset: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
-        .addCase(createInvoice.pending, (state) => {
+        .addCase(createClient.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(createInvoice.fulfilled, (state, action) => {
+        .addCase(createClient.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices.push(action.payload)
+            state.clients.push(action.payload)
         })
-        .addCase(createInvoice.rejected, (state, action) => {
+        .addCase(createClient.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(getInvoices.pending, (state) => {
+        .addCase(getClients.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getInvoices.fulfilled, (state, action) => {
+        .addCase(getClients.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices = action.payload
+            state.clients = action.payload
         })
-        .addCase(getInvoices.rejected, (state, action) => {
+        .addCase(getClients.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(deleteInvoice.pending, (state) => {
+        .addCase(deleteClient.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(deleteInvoice.fulfilled, (state, action) => {
+        .addCase(deleteClient.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices = state.invoices.filter((invoice) => invoice._id !== action.payload.id)
+            state.clients = state.clients.filter((clients) => clients._id !== action.payload.id)
         })
-        .addCase(deleteInvoice.rejected, (state, action) => {
+        .addCase(deleteClient.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
@@ -95,5 +98,5 @@ export const invoiceSlice = createSlice({
     }
 })
 
-export const {reset} = invoiceSlice.actions
-export default invoiceSlice.reducer
+export const {reset} = clientSlice.actions
+export default clientSlice.reducer

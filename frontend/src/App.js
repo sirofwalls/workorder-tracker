@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
 import Invoice from './pages/Invoice';
+import Clients from './pages/Clients';
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
         <Route path='/invoice' element={<Invoice/>}/>
+        <Route path='/clients' element={<Clients/>}/>
       </Routes>
     </div>
     </Router>

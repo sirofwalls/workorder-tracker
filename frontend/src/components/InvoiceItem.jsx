@@ -1,8 +1,8 @@
 import {FaTrashAlt} from 'react-icons/fa'
 import {useDispatch} from 'react-redux'
 import {deleteInvoice} from '../features/invoices/invoiceSlice'
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+import { confirmAlert } from 'react-confirm-alert'; // Import Confirm Modal
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for Confirm Modal
 
 
 function InvoiceItem({invoice, tech}) {

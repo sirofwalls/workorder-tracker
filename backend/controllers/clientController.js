@@ -13,7 +13,7 @@ const getClient = asyncHandler(async (req, res) => {
 })
 
 // Decription: Set/Create the Client
-// Route: POST /api/v1/client/add
+// Route: POST /api/v1/client/
 // Access: Private to admin/manager
 const registerClient = asyncHandler(async (req, res) => {
     if (!req.body.clientName && !req.body.clientNumber) {
@@ -42,7 +42,7 @@ const registerClient = asyncHandler(async (req, res) => {
 // Route: DELETE /api/v1/client/delete/:id
 // Access: Private to admin/manager
 const deleteClient = asyncHandler(async (req, res) => {
-    if (req.techRole !== 'admin') {
+    if (req.tech.techRole !== 'admin') {
         res.status(400)
         throw new Error('You do not have the correct role to do this.')
     }
