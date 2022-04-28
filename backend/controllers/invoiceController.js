@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Invoice = require('../models/invoiceSchema')
+const mongoose = require('mongoose')
 
 
 // Decription: Set/Create the Invoice
@@ -37,6 +38,12 @@ const getInvoice = asyncHandler(async (req, res) => {
 // Route: GET /api/v1/invoice/:id
 // Access: Private to author and admin/manager
 const singleInvoice = asyncHandler(async (req, res) => {
+    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!validID) {
+        res.status(400)
+        throw new Error('That is not a valid ID')
+    }
+
     const getSingle = await Invoice.findById(req.params.id)
 
     if(!getSingle) {
@@ -65,6 +72,12 @@ const singleInvoice = asyncHandler(async (req, res) => {
 // Route: PUT /api/v1/invoice/:id
 // Access: Private to author and admin/manager
 const editInvoice = asyncHandler(async (req, res) => {
+    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!validID) {
+        res.status(400)
+        throw new Error('That is not a valid ID')
+    }
+
     const invoice = await Invoice.findById(req.params.id)
 
     if(!invoice) {
@@ -93,7 +106,13 @@ const editInvoice = asyncHandler(async (req, res) => {
 // Route: DELETE /api/v1/invoice/:id
 // Access: Private to admin/manager
 const deleteInvoice = asyncHandler(async (req, res) => {
-    // Need to limit this to loged in admin users only
+    // Need to limit this to admin users only
+
+    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!validID) {
+        res.status(400)
+        throw new Error('That is not a valid ID')
+    }
 
     const invoice = await Invoice.findById(req.params.id)
 

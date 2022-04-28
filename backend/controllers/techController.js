@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
 const Tech = require('../models/techSchema')
+const mongoose = require('mongoose')
 
 // Decription: Set/Create a new tech
 // Route: POST /api/v1/techs
@@ -77,7 +78,7 @@ const loginTech = asyncHandler( async (req, res) => {
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
 
-    res.status(200).json(req.user)
+    res.status(200).json(req.tech)
 })
 
 // Decription: Edit the tech
@@ -85,6 +86,13 @@ const getTech = asyncHandler( async (req, res) => {
 // Access: Private to admin only
 const editTech = asyncHandler(async (req, res) => {
     // Find the tech to be changed
+
+    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
+    if (!validID) {
+        res.status(400)
+        throw new Error('That is not a valid ID')
+    }
+
     const editTech = await Tech.findById(req.params.id)
 
     if(!editTech) {

@@ -15,6 +15,7 @@ app.use(express.urlencoded({extended: false}));
 // Different routes go here, then sends routes to the controllers for processing
 app.use(url + 'invoice', require('./routes/invoiceRoutes'));
 app.use(url + 'techs', require('./routes/techRoutes'));
+app.use(url + 'client', require('./routes/clientRoutes'));
 
 // Location of frontend after build (For production)
 if (process.env.NODE_ENV === 'production') {
