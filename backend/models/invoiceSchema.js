@@ -31,17 +31,9 @@ const InvoiceSchema = new mongoose.Schema({
     },
     techName: reqString,
 
-    clientName: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Client'
-    },
+    clientName: reqString,
 
-    clientNumber: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Client'
-    },
+    clientNumber: reqString,
     
     startTime: {
         type: String

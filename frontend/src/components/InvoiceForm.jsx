@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import {createInvoice} from '../features/invoices/invoiceSlice'
 
@@ -8,8 +8,10 @@ function InvoiceForm() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+
+  const {clients} = useSelector((state) => state.clients)
+
     const [formData, setFormData] = useState({
-        clientName: '',
         startTime: '',
         endTime: '',
         milesTraveled: 0,
@@ -22,8 +24,12 @@ function InvoiceForm() {
         speedDown: 0
     })
 
+    const [selectData, setSelectData] = useState({
+        clientName: '',
+        clientNumber: ''
+    })
+
     const {
-        clientName,
         startTime,
         endTime,
         milesTraveled,
@@ -36,11 +42,20 @@ function InvoiceForm() {
         speedDown
     } = formData
 
+    const {
+        clientName,
+        clientNumber
+    } = selectData
+
+    const allData = {
+        ...selectData, ...formData
+    }
+
     // Function to control the state of the itmes being typed
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }))
     }
 
@@ -51,12 +66,23 @@ function InvoiceForm() {
         }))
     }
 
+    const onSelect = (e) => {
+        const idx = e.target.selectedIndex;
+        const option = e.target.querySelectorAll('option')[idx];
+        const number = option.getAttribute('number');
+        setSelectData((prevState) => ({
+            ...prevState,
+            clientName: e.target.value,
+            clientNumber: number
+        }))
+    }
+
     const onSubmit = (e) => {
         e.preventDefault()
 
-        dispatch(createInvoice(formData))
+        dispatch(createInvoice(allData))
+        
         setFormData({
-            clientName: '',
             startTime: '',
             endTime: '',
             milesTraveled: 0,
@@ -68,6 +94,12 @@ function InvoiceForm() {
             speedUp: 0,
             speedDown: 0
         })
+
+        setSelectData({
+            clientName: '',
+            clientNumber: ''
+        })
+
         navigate('/')
     }
 
@@ -76,7 +108,12 @@ function InvoiceForm() {
         <form onSubmit={onSubmit} >
             <div className="form-group">
             <label htmlFor="clientName">Client Name</label>
-                <input type="text" name='clientName' id='clientName' value={clientName} onChange={onChange} required />
+                <select onChange={onSelect}>
+                    <option></option>
+                    {clients.map((client) => (
+                        <option key={client._id} name={client.clientName} value={client.clientName} number={client.clientNumber}>{client.clientName}</option>
+                    ))}
+                 </select>
             </div>
             <div className="form-group">
                 <label htmlFor="startTime">Start Time</label>

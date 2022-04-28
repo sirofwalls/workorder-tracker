@@ -16,8 +16,6 @@ const createInvoice = asyncHandler(async (req, res) => {
         ...req.body,
         techId: req.tech.id,
         techName: req.tech.name,
-        clientName: req.client.name,
-        clientNumber: req.client.number
     })
     res.status(200).json(invoice)
 })

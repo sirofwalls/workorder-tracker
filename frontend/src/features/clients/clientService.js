@@ -34,7 +34,6 @@ const deleteClient = async (id, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-console.log(API_URL + 'delete/' + id);
     const response = await axios.delete(API_URL + 'delete/' + id, config)
 
     return response.data

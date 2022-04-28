@@ -6,7 +6,7 @@ const clientSchma = mongoose.Schema({
         required: [true, "Please add a Client Name"]
     },
     clientNumber: {
-        type: Number,
+        type: String,
         unique: true,
         required: [true, "Please add a Client Number"]
     },

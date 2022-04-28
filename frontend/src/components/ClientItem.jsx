@@ -9,7 +9,7 @@ function ClientItem({client, tech}) {
 
     const onDelete = () =>
     confirmAlert({
-        title: 'Confirm to submit',
+        title: 'Confirm to delete',
         message: 'Are you sure to do this.',
         buttons: [
           {

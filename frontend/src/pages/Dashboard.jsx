@@ -18,6 +18,7 @@ function Dashboard() {
     {label: "Date", key: "createdAt"},
     {label: "Tech Name", key: "techName"},
     {label: "Client Name", key: "clientName"},
+    {label: "Client Number", key: "clientNumber"},
     {label: "Start Time", key: "startTime"},
     {label: "End Time", key: "endTime"},
     {label: "Miles Traveled", key: "milesTraveled"},
