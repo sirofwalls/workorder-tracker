@@ -109,7 +109,7 @@ const editTech = asyncHandler(async (req, res) => {
         throw new Error('Tech not found')
     }
 
-    // Make sure the user is allowed to edit the invoice
+    // Make sure the user is allowed to edit the workorder
     if (adminTech.techRole.toString() !== 'admin') {
         res.status(401)
         throw new Error('You do not have permission to make this change.')

@@ -23,20 +23,16 @@ function ClientItem({client, tech}) {
       })
 
   return (
-    <div className="invoice">
-        <div>
-            {(
-                tech.role === 'admin'
-            ) ? (
-                <button onClick={onDelete} className="close"><FaTrashAlt/></button>
-            ) : (<></>)}
+    <tr>
+      <td>{client.clientNumber}</td>
+      <td>{client.clientName}</td>
+      {(tech.role === 'admin'
+        ) ? (
+            <td><button onClick={onDelete} className="close"><FaTrashAlt/></button></td>
+        ) : (
+      <></>)}
+    </tr>
 
-            {<p>Client Name: {client.clientName}</p>}
-
-            {<p>Client Number: {client.clientNumber}</p>}
-            
-        </div>
-    </div>
   )
 }
 

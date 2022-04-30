@@ -1,17 +1,17 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import InvoiceForm from '../components/InvoiceForm'
+import WorkorderForm from '../components/WorkorderForm'
 import Spinner from '../components/Spinner'
-import { getInvoices, reset } from '../features/invoices/invoiceSlice'
+import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 import { getClients} from '../features/clients/clientSlice'
 
-function Invoice() {
+function Workorder() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const {tech} = useSelector((state) => state.auth)
-  const {isLoading, isError, message} = useSelector((state) => state.invoices)
+  const {isLoading, isError, message} = useSelector((state) => state.workorders)
 
   useEffect(() => {
     if (isError) {
@@ -20,7 +20,7 @@ function Invoice() {
     if (!tech) {
       navigate('/login')
     }
-    dispatch(getInvoices())
+    dispatch(getWorkorders())
     dispatch(getClients())
 
     return () => {
@@ -35,11 +35,11 @@ function Invoice() {
   return (
     <>
     <section className="heading">
-      <h1>Create a new Invoice</h1>
+      <h1>Create a new Workorder</h1>
     </section>
-    <InvoiceForm />
+    <WorkorderForm />
     </>
   )
 }
 
-export default Invoice
+export default Workorder

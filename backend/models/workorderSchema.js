@@ -22,8 +22,8 @@ const purchaseSchema = mongoose.Schema({
     cost: scehmaNumber
 })
 
-// main schema for invoices
-const InvoiceSchema = new mongoose.Schema({
+// main schema for workorders
+const WorkorderSchema = new mongoose.Schema({
     techId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -64,4 +64,4 @@ const InvoiceSchema = new mongoose.Schema({
 
 }, {timestamps: true});
 
-module.exports = mongoose.model('Invoice', InvoiceSchema);
+module.exports = mongoose.model('Workorder', WorkorderSchema);

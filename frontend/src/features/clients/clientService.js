@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const API_URL = '/api/v1/client/'
 
-// Create new Invoice
+// Create new Workorder
 const createClient = async (clientData, token) => {
     const config = {
         headers: {

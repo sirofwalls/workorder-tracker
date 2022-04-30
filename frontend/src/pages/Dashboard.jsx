@@ -1,9 +1,9 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import InvoiceItem from '../components/InvoiceItem'
+import WorkorderItem from '../components/WorkorderItem'
 import Spinner from '../components/Spinner'
-import { getInvoices, reset } from '../features/invoices/invoiceSlice'
+import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 import { CSVLink } from "react-csv"
 
 function Dashboard() {
@@ -11,7 +11,7 @@ function Dashboard() {
   const dispatch = useDispatch()
 
   const {tech} = useSelector((state) => state.auth)
-  const {invoices, isLoading, isError, message} = useSelector((state) => state.invoices)
+  const {workorders, isLoading, isError, message} = useSelector((state) => state.workorders)
   
   // Header Content for formating the CSV 
   const headers = [
@@ -31,8 +31,8 @@ function Dashboard() {
     {label: "Change Notes", key: "changeNotes"},
   ]
   
-  // Takes the invoices from the state and formats the date for the CSV
-  const data = invoices.map(row => ({...row, createdAt: new Date(row.createdAt).toLocaleDateString('en-US')}))
+  // Takes the workorders from the state and formats the date for the CSV
+  const data = workorders.map(row => ({...row, createdAt: new Date(row.createdAt).toLocaleDateString('en-US')}))
 
   useEffect(() => {
     if (!tech) {
@@ -42,7 +42,7 @@ function Dashboard() {
       console.log(message)
     }
   
-    dispatch(getInvoices())
+    dispatch(getWorkorders())
 
     return () => {
       dispatch(reset())
@@ -57,21 +57,21 @@ function Dashboard() {
     <>
     <section className="heading">
       <h1>Welcome {tech && tech.name}</h1>
-      <p>Invoice App Dashboard</p>
-      {tech && invoices.length > 0 ? (
-      <CSVLink data={data} headers={headers} filename={"btb-invoices.csv"} target="_blank">
+      <p>Workorder App Dashboard</p>
+      {tech && workorders.length > 0 ? (
+      <CSVLink data={data} headers={headers} filename={"btb-workorders.csv"} target="_blank">
         Download CSV
       </CSVLink>) : <></>}
     </section>
     <section className="content">
-      {tech && invoices.length > 0 ? (
-        <div className="invoices">
-          {invoices.map((invoice) => (
-            <InvoiceItem key={invoice._id} invoice={invoice} tech ={tech}/>
+      {tech && workorders.length > 0 ? (
+        <div className="workorders">
+          {workorders.map((workorder) => (
+            <WorkorderItem key={workorder._id} workorder={workorder} tech ={tech}/>
           ))}
         </div>
       ) : (
-        <h3>There are no Invoices to display</h3>)}
+        <h3>There are no Workorders to display</h3>)}
     </section>
     </>
   )

@@ -1,19 +1,19 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import invoiceService from './invoiceService'
+import workorderService from './workorderService'
 
 const initialState = {
-    invoices: [],
+    workorders: [],
     isError: false,
     isSuccess: false,
     isLoading: false,
     message: ''
 }
 
-// Create new invoice
-export const createInvoice = createAsyncThunk('invoices/create', async (invoiceData, thunkAPI) => {
+// Create new workorder
+export const createWorkorder = createAsyncThunk('workorders/create', async (workorderData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.createInvoice(invoiceData, token)
+        return await workorderService.createWorkorder(workorderData, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -21,11 +21,11 @@ export const createInvoice = createAsyncThunk('invoices/create', async (invoiceD
     }
 })
 
-// Get the Invoices
-export const getInvoices = createAsyncThunk('invoices/getAll', async (_, thunkAPI) => {
+// Get the Workorders
+export const getWorkorders = createAsyncThunk('workorders/getAll', async (_, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.getInvoices(token)
+        return await workorderService.getWorkorders(token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -33,11 +33,11 @@ export const getInvoices = createAsyncThunk('invoices/getAll', async (_, thunkAP
     }
 })
 
-// Delete a single invoice
-export const deleteInvoice = createAsyncThunk('invoices/delete', async (id, thunkAPI) => {
+// Delete a single workorder
+export const deleteWorkorder = createAsyncThunk('workorders/delete', async (id, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
-        return await invoiceService.deleteInvoice(id, token)
+        return await workorderService.deleteWorkorder(id, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -45,49 +45,49 @@ export const deleteInvoice = createAsyncThunk('invoices/delete', async (id, thun
     }
 })
 
-export const invoiceSlice = createSlice({
-    name: 'invoice',
+export const workorderSlice = createSlice({
+    name: 'workorder',
     initialState,
     reducers: {
         reset: (state) => initialState
     },
     extraReducers: (builder) => {
         builder
-        .addCase(createInvoice.pending, (state) => {
+        .addCase(createWorkorder.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(createInvoice.fulfilled, (state, action) => {
+        .addCase(createWorkorder.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices.push(action.payload)
+            state.workorders.push(action.payload)
         })
-        .addCase(createInvoice.rejected, (state, action) => {
+        .addCase(createWorkorder.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(getInvoices.pending, (state) => {
+        .addCase(getWorkorders.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(getInvoices.fulfilled, (state, action) => {
+        .addCase(getWorkorders.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices = action.payload
+            state.workorders = action.payload
         })
-        .addCase(getInvoices.rejected, (state, action) => {
+        .addCase(getWorkorders.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
         })
-        .addCase(deleteInvoice.pending, (state) => {
+        .addCase(deleteWorkorder.pending, (state) => {
             state.isLoading = true
         })
-        .addCase(deleteInvoice.fulfilled, (state, action) => {
+        .addCase(deleteWorkorder.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.invoices = state.invoices.filter((invoice) => invoice._id !== action.payload.id)
+            state.workorders = state.workorders.filter((workorder) => workorder._id !== action.payload.id)
         })
-        .addCase(deleteInvoice.rejected, (state, action) => {
+        .addCase(deleteWorkorder.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
             state.message = action.payload
@@ -95,5 +95,5 @@ export const invoiceSlice = createSlice({
     }
 })
 
-export const {reset} = invoiceSlice.actions
-export default invoiceSlice.reducer
+export const {reset} = workorderSlice.actions
+export default workorderSlice.reducer

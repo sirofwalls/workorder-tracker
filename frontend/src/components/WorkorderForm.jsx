@@ -1,10 +1,10 @@
 import {useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
-import {createInvoice} from '../features/invoices/invoiceSlice'
+import {createWorkorder} from '../features/workorders/workorderSlice'
 
 
-function InvoiceForm() {
+function WorkorderForm() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
@@ -80,7 +80,7 @@ function InvoiceForm() {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        dispatch(createInvoice(allData))
+        dispatch(createWorkorder(allData))
         
         setFormData({
             startTime: '',
@@ -159,11 +159,11 @@ function InvoiceForm() {
                 </div>
             </> : null}
             <div className="form-group">
-                <button className="btn btn-block" type='submit'>Submit</button>
+                <button className="btn btn-block btn-dark" type='submit'>Submit</button>
             </div>
         </form>
     </section>
     )
 }
 
-export default InvoiceForm
+export default WorkorderForm

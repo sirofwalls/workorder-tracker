@@ -37,14 +37,31 @@ function Clients() {
     <section className="heading">
       <h1>Create a new Client</h1>
     </section>
-    <ClientForm />
+    {(tech && tech.role === 'admin') ? (
+      <ClientForm />
+    ) : (
+      <></>
+    )}
     <section className="content">
         {clients.length > 0 ? (
-            <div className="clients">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col">Client #</th>
+                  <th scope="col">Client Name</th>
+                  <th scope="col">Delete</th>
+                </tr>
+              </thead>
+              {clients ? (
+                <tbody>
                 {clients.map((client) => (
-                <ClientItem key={client._id} client={client} tech ={tech}/>
+                  <ClientItem key={client._id} client={client} tech ={tech}/>
                 ))}
-            </div>
+              </tbody>
+              ) : (
+                <></>
+              )}
+            </table>
           ) : (
           <h3>There are no clients to show at this time.</h3>)}
     </section>

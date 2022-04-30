@@ -47,7 +47,7 @@ function ClientForm() {
                 <input type="number" name='clientNumber' id='clientNumber' value={clientNumber} onChange={onChange}/>
             </div>
             <div className="form-group">
-                <button className="btn btn-block" type='submit'>Add Client</button>
+                <button className="btn btn-block btn-dark" type='submit'>Add Client</button>
             </div>
         </form>
     </section>

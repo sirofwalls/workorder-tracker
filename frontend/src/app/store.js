@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
-import invoiceReducer from '../features/invoices/invoiceSlice';
+import workorderReducer from '../features/workorders/workorderSlice';
 import clientReducer from '../features/clients/clientSlice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    invoices: invoiceReducer,
+    workorders: workorderReducer,
     clients: clientReducer
   },
 });

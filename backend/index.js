@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
 // Different routes go here, then sends routes to the controllers for processing
-app.use(url + 'invoice', require('./routes/invoiceRoutes'));
+app.use(url + 'workorder', require('./routes/workorderRoutes'));
 app.use(url + 'techs', require('./routes/techRoutes'));
 app.use(url + 'client', require('./routes/clientRoutes'));
 

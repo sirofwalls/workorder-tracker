@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows} from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
@@ -19,9 +19,13 @@ function Header() {
         navigate('/')
     }
 
-    // Link to navigate to Invoice page... there should be a better way
-    const invoicePage = () => {
-        navigate('/invoice')
+    // Link to navigate to Workorder page... there should be a better way
+    const workorderPage = () => {
+        navigate('/workorder')
+    }
+    // Link to navigate to Workorder page... there should be a better way
+    const clientsPage = () => {
+        navigate('/clients')
     }
 
     return (
@@ -33,8 +37,13 @@ function Header() {
             {tech ? (
                 <>
                 <li>
-                    <button className='btn' onClick={invoicePage}>
-                        <FaFileInvoice /> Create Invoice
+                    <button className='btn' onClick={clientsPage}>
+                        <FaPeopleArrows /> Clients
+                    </button>
+                </li>
+                <li>
+                    <button className='btn' onClick={workorderPage}>
+                        <FaFileInvoice /> Create Workorder
                     </button>
                 </li>
                 <li>

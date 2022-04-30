@@ -3,10 +3,11 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
-import Invoice from './pages/Invoice';
+import Workorder from './pages/Workorder';
 import Clients from './pages/Clients';
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path='/' element={<Dashboard/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
-        <Route path='/invoice' element={<Invoice/>}/>
+        <Route path='/workorder' element={<Workorder/>}/>
         <Route path='/clients' element={<Clients/>}/>
       </Routes>
     </div>
