@@ -51,7 +51,7 @@ function WorkorderItem({workorder, tech}) {
 
             {workorder.verifyNetwork ? (<p>Verify Network: Yes</p>) : (<p>Verify Network: No</p>)}
 
-            {workorder.verifyWifi ? (<p>Verify WiFi: Yes</p>) : (<p>Verify WiFi: No</p>)}
+            {workorder.verifyNetwork ? (<p>Verify WiFi: Yes</p>) : (<></>)}
 
             {workorder.verifyNetwork ? (<p>Up Speed: {workorder.speedUp}</p>) : (<></>)}
 

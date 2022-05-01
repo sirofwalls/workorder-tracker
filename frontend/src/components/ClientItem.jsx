@@ -21,7 +21,6 @@ function ClientItem({client, tech}) {
           }
         ]
       })
-      console.log(client);
 
   return (
     <tr>

@@ -54,13 +54,17 @@ function Clients() {
                 <tr>
                   <th scope="col">Client #</th>
                   <th scope="col">Client Name</th>
-                  <th scope="col">Delete</th>
+                  {(tech.role === 'admin'
+                  ) ? (
+                    <th scope="col">Delete</th>
+                  ) : (
+                <></>)}
                 </tr>
               </thead>
               {clients ? (
                 <tbody>
                 {clients.map((client) => (
-                  <ClientItem key={client.id} client={client} tech ={tech}/>
+                  <ClientItem key={client.clientNumber} client={client} tech ={tech}/>
                 ))}
               </tbody>
               ) : (

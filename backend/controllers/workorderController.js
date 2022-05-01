@@ -20,7 +20,7 @@ const createWorkorder = asyncHandler(async (req, res) => {
         milesTraveled,
         timeTraveled,
         changeNotes,
-        logNotes,
+        jobNotes,
         verifyNetwork,
         verifyWifi,
         speedUp,
@@ -33,7 +33,7 @@ const createWorkorder = asyncHandler(async (req, res) => {
     } = req.tech
 
     try {
-        const results = await connectDB.promise().query(`INSERT INTO workorders (techId, techName, clientName, clientNumber, startTime, endTime, milesTraveled, timeTraveled, changeNotes, logNotes, verifyNetwork, verifyWifi, speedUp, speedDown) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
+        const results = await connectDB.promise().query(`INSERT INTO workorders (techId, techName, clientName, clientNumber, startTime, endTime, milesTraveled, timeTraveled, changeNotes, jobNotes, verifyNetwork, verifyWifi, speedUp, speedDown) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, 
             [techId,
             techName,
             clientName,
@@ -43,7 +43,7 @@ const createWorkorder = asyncHandler(async (req, res) => {
             milesTraveled,
             timeTraveled,
             changeNotes,
-            logNotes,
+            jobNotes,
             verifyNetwork,
             verifyWifi,
             speedUp,
@@ -138,7 +138,7 @@ const editWorkorder = asyncHandler(async (req, res) => {
         milesTraveled,
         timeTraveled,
         changeNotes,
-        logNotes,
+        jobNotes,
         verifyNetwork,
         verifyWifi,
         speedUp,
@@ -157,13 +157,13 @@ const editWorkorder = asyncHandler(async (req, res) => {
     const updateMilesTraveled = milesTraveled || editTech.milesTraveled
     const updateTimeTraveled = timeTraveled || editTech.timeTraveled
     const updateChangeNotes = changeNotes || editTech.changeNotes
-    const updateLogNotes = logNotes || editTech.logNotes
+    const updateLogNotes = jobNotes || editTech.jobNotes
     const updateVerifyNetwork = verifyNetwork || editTech.verifyNetwork
     const updateVerifyWifi = verifyWifi || editTech.verifyWifi
     const updateSpeedUp = speedUp || editTech.speedUp
     const updateSpeedDown = speedDown || editTech.speedDown
 
-    const updatedWorkorder = await connectDB.promise().query(`UPDATE workorders SET techName = ?, techId = ?, clientName = ?, clientNumber = ?, startTime = ?, endTime = ?, milesTraveled = ?, timeTraveled = ?, changeNotes = ?, logNotes = ?, verifyNetwork = ?, verifyWifi = ?, speedUp = ?, speedDown = ? WHERE id = ?`, 
+    const updatedWorkorder = await connectDB.promise().query(`UPDATE workorders SET techName = ?, techId = ?, clientName = ?, clientNumber = ?, startTime = ?, endTime = ?, milesTraveled = ?, timeTraveled = ?, changeNotes = ?, jobNotes = ?, verifyNetwork = ?, verifyWifi = ?, speedUp = ?, speedDown = ? WHERE id = ?`, 
             [techName,
             techId,
             updateClientName,

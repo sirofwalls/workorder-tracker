@@ -47,7 +47,7 @@ function Header() {
                     </button>
                 </li>
                 <li>
-                    <button className='btn' onClick={onLogout}>
+                    <button className='btn btn-danger' onClick={onLogout}>
                         <FaSignOutAlt /> Log Out
                     </button>
                 </li>
