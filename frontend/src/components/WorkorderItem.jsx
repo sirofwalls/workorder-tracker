@@ -35,6 +35,8 @@ function WorkorderItem({workorder, tech}) {
             {new Date(workorder.createdAt).toLocaleDateString('en-US')}
             {<h2>{workorder.clientName}</h2>}
 
+            {<p>Work Order Number: {workorder.id}</p>}
+
             {<p>Tech Name: {workorder.techName}</p>}
 
             {<p>Start Time: {workorder.startTime}</p>}

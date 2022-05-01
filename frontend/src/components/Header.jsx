@@ -1,4 +1,4 @@
-import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows} from 'react-icons/fa'
+import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows, FaList} from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
@@ -20,12 +20,20 @@ function Header() {
     }
 
     // Link to navigate to Workorder page... there should be a better way
-    const workorderPage = () => {
-        navigate('/workorder')
+    const workorderCreatePage = () => {
+        navigate('/create-workorder')
     }
-    // Link to navigate to Workorder page... there should be a better way
+    // Link to navigate to Clients page... there should be a better way
     const clientsPage = () => {
         navigate('/clients')
+    }
+    // Link to navigate to Workorder List page... again, there should be a better way
+    const workorderListPage = () => {
+        navigate('/workorders')
+    }
+    // Link to navigate to Register page... again, again, there should be a better way
+    const registerPage = () => {
+        navigate('/register')
     }
 
     return (
@@ -42,10 +50,22 @@ function Header() {
                     </button>
                 </li>
                 <li>
-                    <button className='btn' onClick={workorderPage}>
+                    <button className='btn' onClick={workorderCreatePage}>
                         <FaFileInvoice /> Create Workorder
                     </button>
                 </li>
+                <li>
+                    <button className='btn' onClick={workorderListPage}>
+                        <FaList/> View Workorders
+                    </button>
+                </li>
+                {tech.role === 'admin' ? (
+                    <li>
+                    <button className='btn' onClick={registerPage}>
+                        <FaUser /> Add User
+                    </button>
+                    </li>
+                ) : (<></>)}
                 <li>
                     <button className='btn btn-danger' onClick={onLogout}>
                         <FaSignOutAlt /> Log Out
@@ -58,11 +78,6 @@ function Header() {
                 <li>
                     <Link to='/login'>
                         <FaSignInAlt /> Login
-                    </Link>
-                </li>
-                <li>
-                    <Link to='/register'>
-                        <FaUser /> Register
                     </Link>
                 </li>
                 </>

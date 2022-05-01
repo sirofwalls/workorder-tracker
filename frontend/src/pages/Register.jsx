@@ -27,10 +27,14 @@ function Register() {
 
     // Looks for changes and checks if there is an error. If successful it will redirect to the root directory. Will run reset function either way.
     useEffect(() => {
+        if (!tech && tech.role !== 'admin') {
+            navigate('/')
+          }
+
         if (isError) {
             toast.error(message)
         }
-        if (isSuccess || tech) {
+        if (isSuccess) {
             navigate('/')
         }
 

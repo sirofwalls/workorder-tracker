@@ -6,9 +6,7 @@ const API_URL= '/api/v1/techs/'
 const register = async (techData) => {
     const response = await axios.post(API_URL, techData)
 
-    if (response.data) {
-        localStorage.setItem('tech', JSON.stringify(response.data))
-    }
+    // Need to put somehting here eventually. originally was to provide token to registered user
 
     return response.data
 }

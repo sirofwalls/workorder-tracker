@@ -3,8 +3,9 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
-import Workorder from './pages/Workorder';
+import CreateWorkorder from './pages/CreateWorkorder';
 import Clients from './pages/Clients';
+import Workorders from './pages/Workorders'
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -19,7 +20,8 @@ function App() {
         <Route path='/' exact element={<Dashboard/>}/>
         <Route path='/login' element={<Login/>}/>
         <Route path='/register' element={<Register/>}/>
-        <Route path='/workorder' element={<Workorder/>}/>
+        <Route path='/create-workorder' element={<CreateWorkorder/>}/>
+        <Route path='/workorders' element={<Workorders/>}/>
         <Route path='/clients' element={<Clients/>}/>
       </Routes>
     </div>
