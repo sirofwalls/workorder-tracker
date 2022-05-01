@@ -14,13 +14,14 @@ function ClientItem({client, tech}) {
         buttons: [
           {
             label: 'Yes',
-            onClick: () => dispatch(deleteClient(client._id))
+            onClick: () => dispatch(deleteClient(client.id))
           },
           {
             label: 'No',
           }
         ]
       })
+      console.log(client);
 
   return (
     <tr>

@@ -3,6 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import WorkorderItem from '../components/WorkorderItem'
 import Spinner from '../components/Spinner'
+import {toast} from 'react-toastify'
 import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 import { CSVLink } from "react-csv"
 
@@ -39,7 +40,7 @@ function Dashboard() {
       navigate('/login')
     }
     if (isError) {
-      console.log(message)
+      toast.error(message)
     }
   
     dispatch(getWorkorders())
@@ -67,7 +68,7 @@ function Dashboard() {
       {tech && workorders.length > 0 ? (
         <div className="workorders">
           {workorders.map((workorder) => (
-            <WorkorderItem key={workorder._id} workorder={workorder} tech ={tech}/>
+            <WorkorderItem key={workorder.id} workorder={workorder} tech={tech}/>
           ))}
         </div>
       ) : (

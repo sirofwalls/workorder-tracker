@@ -88,7 +88,7 @@ export const clientSlice = createSlice({
         .addCase(deleteClient.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.clients = state.clients.filter((clients) => clients._id !== action.payload.id)
+            state.clients = state.clients.filter((clients) => clients.id.toString() !== action.payload.id)
         })
         .addCase(deleteClient.rejected, (state, action) => {
             state.isLoading = false

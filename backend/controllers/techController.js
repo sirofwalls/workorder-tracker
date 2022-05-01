@@ -1,25 +1,24 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const asyncHandler = require('express-async-handler')
-const Tech = require('../models/techSchema')
-const mongoose = require('mongoose')
+const connectDB = require('../config/db')
 
 // Decription: Set/Create a new tech
 // Route: POST /api/v1/techs
 // Access: Public
 const registerTech = asyncHandler( async (req, res) => {
-    const {name, email, password, techRole} = req.body
+    const {techName, email, password} = req.body
     
     // Make sure all the information was sent in the body
-    if (!name || !email || !password) {
+    if (!techName || !email || !password) {
         res.status(400)
         throw new Error('Please add all fields')
     }
 
     // Check to see if the Tech already exists
-    const techExists = await Tech.findOne({email})
+    const techExists = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, email)
 
-    if (techExists) {
+    if (techExists[0].length > 0) {
         res.status(400)
         throw new Error('Tech Already exists')
     }
@@ -29,23 +28,28 @@ const registerTech = asyncHandler( async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     // Create the Tech
-    const tech = await Tech.create({
-        name,
-        email, 
-        password: hashedPassword
-    })
+    await connectDB.promise().query(`INSERT INTO users (techName, email, password) VALUES(?, ?, ?)`, [techName, email, hashedPassword])
+
+    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [email])
+
+    const tech = results[0][0]
 
     if (tech) {
         res.status(201).json({
-            _id: tech.id,
-            name: tech.name,
+            id: tech.id,
+            name: tech.techName,
             email: tech.email,
             role: tech.techRole,
-            token: generateToken(tech._id)
+            token: generateToken(tech.id)
         })
     } else {
+        if (error.errno === 1062) {
+            res.status(400)
+            throw new Error('That Client Number already exists')
+        }
         res.status(400)
-        throw new Error('Invalid data')
+        console.log(error);
+        throw new Error('Invalid data or somehting went wrong')
     }
 })
 
@@ -56,15 +60,17 @@ const loginTech = asyncHandler( async (req, res) => {
     const {email, password} = req.body
 
     // Check for user email
-    const tech = await Tech.findOne({email})
+    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [email])
+    
+    const tech = results[0][0]
 
     if (tech && (await bcrypt.compare(password, tech.password))) {
         res.json({
-            _id: tech.id,
-            name: tech.name,
+            id: tech.id,
+            name: tech.techName,
             email: tech.email,
             role: tech.techRole,
-            token: generateToken(tech._id)
+            token: generateToken(tech.id)
         })
     } else {
         res.status(400)
@@ -73,35 +79,33 @@ const loginTech = asyncHandler( async (req, res) => {
 
 })
 
-// Decription: Get tech data
+// Decription: Get tech data for logged in user
 // Route: POST /api/v1/techs/me
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
+    const {id, techName, email, techRole} = req.tech
 
-    res.status(200).json(req.tech)
+    res.status(200).json({id, techName, email, techRole})
 })
 
 // Decription: Edit the tech
 // Route: PUT /api/v1/techs/edit/:id
 // Access: Private to admin only
 const editTech = asyncHandler(async (req, res) => {
-    // Find the tech to be changed
+    
+    const id = req.params.id
 
-    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!validID) {
-        res.status(400)
-        throw new Error('That is not a valid ID')
-    }
+    const editSearch = await connectDB.promise().query(`SELECT * FROM users WHERE id=?`, [id])
 
-    const editTech = await Tech.findById(req.params.id)
+    const editTech = editSearch[0][0]
 
     if(!editTech) {
         res.status(400)
         throw new Error('That tech was not found')
     }
-
+    
     // Confirm that the tech making the change has admin role
-    const adminTech = await Tech.findById(req.tech.id)
+    const adminTech = req.tech
 
     // Double check that there is a user
     if (!adminTech) {
@@ -109,15 +113,25 @@ const editTech = asyncHandler(async (req, res) => {
         throw new Error('Tech not found')
     }
 
+
     // Make sure the user is allowed to edit the workorder
     if (adminTech.techRole.toString() !== 'admin') {
         res.status(401)
         throw new Error('You do not have permission to make this change.')
     }
 
-    const updatedTech = await Tech.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    const updateName = req.body.techName || editTech.techName
+    const updateEmail = req.body.email || editTech.email
+    const updateTechRole = req.body.techRole || editTech.techRole
 
-    res.status(200).json(updatedTech)
+    const updatedTech = await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, id])
+
+    const dbSearch = await connectDB.promise().query(`SELECT * FROM users WHERE id=?`, [id])
+    
+    const results = dbSearch[0][0]
+    const {id: _id, techName, email, techRole} = results
+
+    res.status(200).json({id, techName, email, techRole})
 })
 
 // Generate JWT

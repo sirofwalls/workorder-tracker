@@ -4,7 +4,7 @@ const colors = require('colors'); // To make pretty colors in the console. Not n
 const dotenv = require('dotenv').config();
 const port = process.env.PORT || 5000;
 const {errorHandler} = require('./middleware/errorMiddleware');
-const connectDB = require('./config/db');
+const maria = require('./config/db')
 const app = express();
 const url = '/api/v1/'; // All requests will need to start with this. (domain.com/[insert this const here])
 
@@ -28,7 +28,16 @@ if (process.env.NODE_ENV === 'production') {
 // Uses the error handler for the "throw new Error messages"
 app.use(errorHandler)
 
-// Starts the server, then connects to the Mongo Database. 
+// Starts the server, then connects to the SQL Database. 
 app.listen(port, () => console.log(`Server started on port ${port}`.white));
-connectDB()
 
+connectDB = () => {
+    try {
+        const conn = maria
+        console.log(`MariaDB connected:  ${conn.config.host}`.white);
+    } catch (err) {
+        console.log(`${err}`.red)
+        process.exit(1)
+    }
+}
+connectDB()

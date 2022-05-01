@@ -1,16 +1,6 @@
+const expressAsyncHandler = require('express-async-handler')
 const asyncHandler = require('express-async-handler')
-const Client = require('../models/clientSchema')
-const mongoose = require('mongoose')
-
-
-// Decription: Gets all of the Clients
-// Route: GET /api/v1/client/
-// Access: Private to admin/manager
-const getClient = asyncHandler(async (req, res) => {
-    const clients = await Client.find()
-
-    res.status(200).json(clients)
-})
+const connectDB = require('../config/db')
 
 // Decription: Set/Create the Client
 // Route: POST /api/v1/client/
@@ -21,21 +11,32 @@ const registerClient = asyncHandler(async (req, res) => {
         throw new Error('Client name and number are required')
     }
     
-    const client = await Client.create({
-        clientName: req.body.clientName,
-        clientNumber: req.body.clientNumber
-    })
-    
-    if (client) {
-        res.status(201).json({
-            _id: client.id,
-            name: client.clientName,
-            number: client.clientNumber
-        })
-    } else {
-        res.status(400)
-        throw new Error('Invalid data')
+    const {clientName, clientNumber} = req.body
+    try {
+        const results = await connectDB.promise().query(`INSERT INTO clients (clientName, clientNumber) VALUES(?, ?)`, [clientName, clientNumber])
+
+        res.status(201).send({clientName, clientNumber})
+    } catch (error) {
+        if (error.errno === 1062) {
+            res.status(400)
+            throw new Error('That Client Number already exists')
+        }
+        if (error) {
+            res.status(400)
+            throw new Error('Something went wrong')
+        }
+        console.log(error);
     }
+})
+
+// Decription: Gets all of the Clients
+// Route: GET /api/v1/client/
+// Access: Private to admin/manager
+const getClient = asyncHandler(async (req, res) => {
+    const results = await connectDB.promise().query(`SELECT * FROM clients`)
+
+    const clients = results[0]
+    res.status(200).json(clients)
 })
 
 // Decription: Deletes the Client
@@ -47,20 +48,18 @@ const deleteClient = asyncHandler(async (req, res) => {
         throw new Error('You do not have the correct role to do this.')
     }
 
-    const validID = mongoose.Types.ObjectId.isValid(req.params.id);
-    if (!validID) {
-        res.status(400)
-        throw new Error('That is not a valid ID')
-    }
+    const id = req.params.id
 
-    const client = await Client.findById(req.params.id)
+    const editSearch = await connectDB.promise().query(`SELECT * FROM clients WHERE id=?`, [id])
+
+    const client = editSearch[0][0]
 
     if(!client) {
         res.status(400)
         throw new Error('That client was not found')
     }
 
-    await Client.findByIdAndDelete(req.params.id)
+    await connectDB.promise().query(`DELETE FROM clients WHERE id=?`, [id])
     res.status(200).json({id: req.params.id})
 }) 
 

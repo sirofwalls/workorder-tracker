@@ -111,7 +111,7 @@ function WorkorderForm() {
                 <select onChange={onSelect}>
                     <option></option>
                     {clients.map((client) => (
-                        <option key={client._id} name={client.clientName} value={client.clientName} number={client.clientNumber}>{client.clientName}</option>
+                        <option key={client.id} name={client.clientName} value={client.clientName} number={client.clientNumber}>{client.clientName}</option>
                     ))}
                  </select>
             </div>

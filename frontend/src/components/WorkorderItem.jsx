@@ -15,7 +15,7 @@ function WorkorderItem({workorder, tech}) {
         buttons: [
           {
             label: 'Yes',
-            onClick: () => dispatch(deleteWorkorder(workorder._id))
+            onClick: () => dispatch(deleteWorkorder(workorder.id))
           },
           {
             label: 'No',

@@ -99,6 +99,10 @@ h3 {
   position: relative;
 }
 
+.workorder .close {
+  position:absolute
+}
+
 .close {
   top: 10px;
   right: 15px;

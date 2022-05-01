@@ -2,6 +2,7 @@ import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import WorkorderForm from '../components/WorkorderForm'
+import {toast} from 'react-toastify'
 import Spinner from '../components/Spinner'
 import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 import { getClients} from '../features/clients/clientSlice'
@@ -20,6 +21,11 @@ function Workorder() {
     if (!tech) {
       navigate('/login')
     }
+
+    if (isError) {
+      toast.error(message)
+    }
+
     dispatch(getWorkorders())
     dispatch(getClients())
 

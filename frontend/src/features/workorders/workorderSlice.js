@@ -64,7 +64,7 @@ export const workorderSlice = createSlice({
         .addCase(createWorkorder.rejected, (state, action) => {
             state.isLoading = false
             state.isError = true
-            state.message = action.payload
+            state.message(action.payload)
         })
         .addCase(getWorkorders.pending, (state) => {
             state.isLoading = true
@@ -85,7 +85,7 @@ export const workorderSlice = createSlice({
         .addCase(deleteWorkorder.fulfilled, (state, action) => {
             state.isLoading = false
             state.isSuccess = true
-            state.workorders = state.workorders.filter((workorder) => workorder._id !== action.payload.id)
+            state.workorders = state.workorders.filter((workorders) => workorders.id.toString() !== action.payload.id)
         })
         .addCase(deleteWorkorder.rejected, (state, action) => {
             state.isLoading = false

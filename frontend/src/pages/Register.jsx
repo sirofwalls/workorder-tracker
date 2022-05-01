@@ -11,13 +11,13 @@ import Spinner from '../components/Spinner'
 function Register() {
     // State handler for the form
     const [formData, setFormData] = useState({
-        name: '',
+        techName: '',
         email: '',
         password: '',
         password2: ''
     })
 
-    const {name, email, password, password2} = formData
+    const {techName, email, password, password2} = formData
 
     // Initialize navigate and dispatch
     const navigate = useNavigate()
@@ -55,7 +55,7 @@ function Register() {
             toast.error('Password must be between 8 and 24 characters in length')
         } else {
             // If the password match in the form send the userdata to register function
-            const userData = {name, email, password}
+            const userData = {techName, email, password}
             dispatch(register(userData))
         }
     }
@@ -73,7 +73,7 @@ function Register() {
         <section className="form">
             <form onSubmit={onSubmit} >
                 <div className="form-group">
-                    <input type="text" className="form-control" id='name' name='name' value={name} placeholder='Enter a name' onChange={onChange} />
+                    <input type="text" className="form-control" id='techName' name='techName' value={techName} placeholder='Enter a name' onChange={onChange} />
                 </div>
                 <div className="form-group">
                     <input type="email" className="form-control" id='email' name='email' value={email} placeholder='Enter an email' onChange={onChange} />
@@ -85,7 +85,7 @@ function Register() {
                     <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm the password' onChange={onChange} />
                 </div>
                 <div className="form-group">
-                    <button type='submit' className='btn btn-block'>Register</button>
+                    <button type='submit' className='btn btn-block btn-dark'>Register</button>
                 </div>
             </form>
         </section>
