@@ -3,8 +3,13 @@ import axios from 'axios'
 const API_URL= '/api/v1/techs/'
 
 // Register user in the Database
-const register = async (techData) => {
-    const response = await axios.post(API_URL, techData)
+const register = async (techData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.post(API_URL, techData, config)
 
     // Need to put somehting here eventually. originally was to provide token to registered user
 

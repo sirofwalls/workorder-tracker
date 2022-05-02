@@ -16,7 +16,8 @@ const initialState = {
 export const register = createAsyncThunk('auth/register', async (tech, thunkAPI) => {
     try {
         // Uses functions from authService.js
-        return await authService.register(tech)
+        const token = thunkAPI.getState().auth.tech.token
+        return await authService.register(tech, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -74,7 +75,7 @@ export const authSlice = createSlice({
             .addCase(register.fulfilled, (state, action) => {
                 state.isLoading = false
                 state.isSuccess = true
-                state.tech = action.payload
+                state.message = action.payload
             })
             .addCase(register.rejected, (state, action) => {
                 state.isLoading = false

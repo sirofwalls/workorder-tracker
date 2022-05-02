@@ -36,11 +36,7 @@ const registerTech = asyncHandler( async (req, res) => {
 
     if (tech) {
         res.status(201).json({
-            id: tech.id,
-            name: tech.techName,
-            email: tech.email,
-            role: tech.techRole,
-            token: generateToken(tech.id)
+            message: 'Tech has been created'
         })
     } else {
         if (error.errno === 1062) {

@@ -19,8 +19,6 @@ function Dashboard() {
     if (isError) {
       toast.error(message)
     }
-  
-    // dispatch(getWorkorders())
 
     // return () => {
     //   dispatch(reset())
