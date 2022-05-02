@@ -79,13 +79,14 @@ const loginTech = asyncHandler( async (req, res) => {
 
 })
 
-// Decription: Get tech data for logged in user
+// Decription: Get all techs data
 // Route: POST /api/v1/techs/me
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
-    const {id, techName, email, techRole} = req.tech
+    const results = await connectDB.promise().query(`SELECT * FROM users`)
 
-    res.status(200).json({id, techName, email, techRole})
+    const tech = results[0]
+    res.status(200).json(tech)
 })
 
 // Decription: Edit the tech

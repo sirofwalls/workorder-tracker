@@ -22,6 +22,19 @@ const login = async (techData) => {
     return response.data
 }
 
+// Get all of the users
+const getUsers = async (token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.get(API_URL + 'me', config)
+
+    return response.data
+}
+
 //Log out the user
 const logout = () => {
     localStorage.removeItem('tech')
@@ -30,7 +43,8 @@ const logout = () => {
 const authService = {
     register,
     logout,
-    login
+    login,
+    getUsers
 }
 
 export default authService

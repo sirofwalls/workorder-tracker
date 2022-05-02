@@ -49,7 +49,7 @@ function Clients() {
     )}
     <section className="content">
         {clients.length > 0 ? (
-            <table className="table">
+            <table className="table table-striped">
               <thead>
                 <tr>
                   <th scope="col">Client #</th>

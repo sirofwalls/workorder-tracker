@@ -34,9 +34,6 @@ function Register() {
         if (isError) {
             toast.error(message)
         }
-        if (isSuccess) {
-            navigate('/')
-        }
 
         dispatch(reset())
     }, [tech, isError, isSuccess, message, navigate, dispatch])
@@ -61,6 +58,7 @@ function Register() {
             // If the password match in the form send the userdata to register function
             const userData = {techName, email, password}
             dispatch(register(userData))
+            navigate('/')
         }
     }
 

@@ -2,17 +2,20 @@ import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import WorkorderItem from '../components/WorkorderItem'
+import WorkorderSortForm from '../components/WorkorderSortForm'
 import Spinner from '../components/Spinner'
 import {toast} from 'react-toastify'
 import { getWorkorders, reset } from '../features/workorders/workorderSlice'
+import {getUsers} from '../features/auth/authSlice'
 import { CSVLink } from "react-csv"
 
 function Dashboard() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const {tech} = useSelector((state) => state.auth)
-  const {workorders, isLoading, isError, message} = useSelector((state) => state.workorders)
+  const {tech, isLoading: authLoading} = useSelector((state) => state.auth)
+  const {workorders, isLoading: workorderLoading, isError, message} = useSelector((state) => state.workorders)
+  
   
   // Header Content for formating the CSV 
   const headers = [
@@ -43,6 +46,7 @@ function Dashboard() {
       toast.error(message)
     }
   
+    dispatch(getUsers())
     dispatch(getWorkorders())
 
     return () => {
@@ -50,19 +54,19 @@ function Dashboard() {
     }
   }, [tech, navigate, isError, message, dispatch])
 
-  if (isLoading) {
+  if (authLoading || workorderLoading) {
     return <Spinner />
   }
 
   return (
     <>
     <section className="heading">
-      <p>Workorder App Dashboard</p>
       {tech && workorders.length > 0 ? (
       <CSVLink data={data} headers={headers} filename={"btb-workorders.csv"} target="_blank">
         Download CSV
       </CSVLink>) : <></>}
     </section>
+    <WorkorderSortForm />
     <section className="content">
       {tech && workorders.length > 0 ? (
         <div className="workorders">

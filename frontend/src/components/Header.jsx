@@ -2,6 +2,7 @@ import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows, FaList
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
+import logo from '../assets/pictures/BTB-logo.png'
 
 function Header() {
 
@@ -39,7 +40,7 @@ function Header() {
     return (
     <header className='header'>
         <div className="logo">
-            <Link to='/'>Beyond The Bit</Link>
+            <Link to='/'><img src={logo} alt="Beyond the Bit Logo" /> </Link>
         </div>
         <ul>
             {tech ? (

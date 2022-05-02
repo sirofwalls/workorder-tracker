@@ -1,5 +1,4 @@
 const asyncHandler = require('express-async-handler')
-const Workorder = require('../models/workorderSchema')
 const connectDB = require('../config/db')
 
 
