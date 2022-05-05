@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import WorkorderItem from '../components/WorkorderItem'
@@ -66,7 +66,7 @@ function Dashboard() {
         Download CSV
       </CSVLink>) : <></>}
     </section>
-    <WorkorderSortForm />
+    <WorkorderSortForm/>
     <section className="content">
       {tech && workorders.length > 0 ? (
         <div className="workorders">

@@ -63,10 +63,20 @@ const createWorkorder = asyncHandler(async (req, res) => {
 // Access: Private to author or admin
 const getWorkorder = asyncHandler(async (req, res) => {
 
-    const results = await connectDB.promise().query(`SELECT * FROM workorders`)
+    const id = req.tech.id
+    const role = req.tech.techRole
 
-    const clients = results[0]
-    res.status(200).json(clients)
+    if (role === 'admin') {
+        const results = await connectDB.promise().query(`SELECT * FROM workorders`)
+
+        const clients = results[0]
+        res.status(200).json(clients)
+    } else {
+        const results = await connectDB.promise().query(`SELECT * FROM workorders WHERE techId=?`, [id])
+
+        const clients = results[0]
+        res.status(200).json(clients)
+    }
 })
 
 // Decription: Gets a single workorder (organize and sort on frontend)
