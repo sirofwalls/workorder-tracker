@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const connectDB = require('../config/db')
+const nodemailer = require('nodemailer')
 
 
 // Decription: Set/Create the Workorder
@@ -48,7 +49,64 @@ const createWorkorder = asyncHandler(async (req, res) => {
             speedUp,
             speedDown])
 
-        res.status(201).send(results)
+        const createdId = results[0].insertId
+
+        const singleSearch = await connectDB.promise().query(`SELECT * FROM workorders WHERE id=?`, [createdId])
+
+        const getSingle = singleSearch[0][0]
+
+        if(!getSingle) {
+            res.status(400)
+            throw new Error('That workorder was not found')
+        }
+
+        // Sends the email after saving the new workorder to the database
+        const transport = nodemailer.createTransport({
+            host: process.env.MAIL_HOST,
+            port: process.env.MAIL_PORT,
+            auth: {
+                user: process.env.MAIL_USER,
+                pass: process.env.MAIL_PASS
+            },
+            tls: {
+                rejectUnauthorized: true,
+                minVersion: "TLSv1.2"
+            }
+        })
+
+        await transport.sendMail({
+            from: process.env.MAIL_FROM,
+            to: process.env.MAIL_TO,
+            subject: `A new Work Order was created by ${getSingle.techName}`,
+            html: `
+            <html>
+                <body>
+                    <div style="
+                    border 1px solid black; 
+                    font-family: sans-serif;
+                    line-hieight: 2;">
+                        <h2>Work Order Details:</h2>
+                        <p>Work Order Number: ${getSingle.techId}</p>
+                        <p>Tech Name: ${getSingle.techName}</p>
+                        <p>Client: ${getSingle.clientName}</p>
+                        <p>Client Number: ${getSingle.clientNumber}</p>
+                        <p>Start Time: ${getSingle.startTime}</p>
+                        <p>End Time: ${getSingle.endTime}</p>
+                        <p>Miles Traveled: ${getSingle.milesTraveled}</p>
+                        <p>Time Travsled: ${getSingle.timeTraveled}</p>
+                        <p>Internal Change Notes: ${getSingle.changeNotes ? (`${getSingle.changeNotes}`) : ('N/A')}</p>
+                        <p>Notes for work done on job: ${getSingle.jobNotes ? (`${getSingle.jobNotes}`) : ('N/A')}</p>
+                        <p>Verified Network?: ${getSingle.verifyNetwork ? ('Yes') : ('No')}</p>
+                        <p>Verified WiFi?: ${getSingle.verifyWifi ? ('Yes') : ('No')}</p>
+                        <p>ISP Speed Up: ${getSingle.speedUp}</p>
+                        <p>ISP Speed Down: ${getSingle.speedDown}</p>
+                    </div>
+                </body>
+            </html>
+            `
+        })
+
+        res.status(200).json(getSingle)
     } catch (error) {
         if (error.errno === 1062) {
             res.status(400)
@@ -86,10 +144,6 @@ const singleWorkorder = asyncHandler(async (req, res) => {
     const id = req.params.id
     const tech = req.tech
 
-    const singleSearch = await connectDB.promise().query(`SELECT * FROM workorders WHERE id=?`, [id])
-
-    const getSingle = singleSearch[0][0]
-
     if(!getSingle) {
         res.status(400)
         throw new Error('That workorder was not found')
@@ -100,6 +154,10 @@ const singleWorkorder = asyncHandler(async (req, res) => {
         res.status(401)
         throw new Error('User not found')
     }
+
+    const singleSearch = await connectDB.promise().query(`SELECT * FROM workorders WHERE id=?`, [id])
+
+    const getSingle = singleSearch[0][0]
     
     // Make sure the user is allowed to view the workorder
     if (getSingle.techId !== tech.id && tech.techRole !== 'admin') {
@@ -130,7 +188,7 @@ const editWorkorder = asyncHandler(async (req, res) => {
         res.status(401)
         throw new Error('User not found')
     }
-
+    // Throws an error if there is no "req.tech" ... this is why the const is after the check from req
     const tech = req.tech
 
     // Make sure the user is allowed to edit the workorder
@@ -208,9 +266,9 @@ const deleteWorkorder = asyncHandler(async (req, res) => {
 
     const editSearch = await connectDB.promise().query(`SELECT * FROM workorders WHERE id=?`, [id])
 
-    const client = editSearch[0]
+    const deletedWorkorder = editSearch[0]
 
-    if(!client) {
+    if(!deletedWorkorder) {
         res.status(400)
         throw new Error('That workorder was not found')
     }
