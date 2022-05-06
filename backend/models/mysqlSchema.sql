@@ -1,6 +1,8 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
+CREATE DATABASE IF NOT EXISTS `btb_workorder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `btb_workorder`;
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
@@ -32,7 +34,7 @@ CREATE TABLE `workorders` (
   `endTime` time NOT NULL,
   `milesTraveled` int(11) NOT NULL DEFAULT 0,
   `timeTraveled` int(11) NOT NULL DEFAULT 0,
-  `changeNotes` text NOT NULL,
+  `changeNotes` text DEFAULT NULL,
   `jobNotes` text DEFAULT NULL,
   `verifyNetwork` tinyint(1) NOT NULL DEFAULT 0,
   `verifyWifi` tinyint(1) NOT NULL DEFAULT 0,
@@ -44,21 +46,35 @@ CREATE TABLE `workorders` (
 
 
 ALTER TABLE `clients`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD UNIQUE KEY `clientNumber` (`clientNumber`),
+  ADD UNIQUE KEY `clientName` (`clientName`);
 
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD UNIQUE KEY `techName` (`techName`);
 
 ALTER TABLE `workorders`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `techName` (`techName`),
+  ADD KEY `clientNumber` (`clientNumber`),
+  ADD KEY `clientName` (`clientName`),
+  ADD KEY `techId` (`techId`) USING BTREE;
 
 
 ALTER TABLE `clients`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `workorders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+ALTER TABLE `workorders`
+  ADD CONSTRAINT `workorders_ibfk_1` FOREIGN KEY (`techId`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `workorders_ibfk_2` FOREIGN KEY (`techName`) REFERENCES `users` (`techName`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `workorders_ibfk_3` FOREIGN KEY (`clientNumber`) REFERENCES `clients` (`clientNumber`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `workorders_ibfk_4` FOREIGN KEY (`clientName`) REFERENCES `clients` (`clientName`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
