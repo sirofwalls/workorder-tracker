@@ -1,8 +1,11 @@
-import {FaTrashAlt} from 'react-icons/fa'
+import {FaTrashAlt, FaEye} from 'react-icons/fa'
 import {useDispatch} from 'react-redux'
 import {deleteWorkorder} from '../features/workorders/workorderSlice'
 import { confirmAlert } from 'react-confirm-alert'; // Import Confirm Modal
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for Confirm Modal
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for Confirm Delete
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import {useState} from 'react'
 
 
 function WorkorderItem({workorder, tech}) {
@@ -23,44 +26,55 @@ function WorkorderItem({workorder, tech}) {
         ]
       })
 
+      const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     return (
-    <div className="workorder">
-        <div>
-            {(
-                tech.id === workorder.id || tech.role === 'admin'
-            ) ? (
-                <button onClick={onDelete} className="close"><FaTrashAlt/></button>
-            ) : (<></>)}
+      <>
+      <tr>
+      <td>{workorder.id}</td>
+      <td>{new Date(workorder.createdAt).toLocaleDateString('en-US')}</td>
+      <td>{workorder.clientName}</td>
+      <td><Button variant="outline-warning" onClick={handleShow}>
+        <FaEye/>
+      </Button></td>
+      {(tech.role === 'admin'
+        ) ? (
+          <>
+            <td>{workorder.techName}</td>
+            <td><Button onClick={onDelete} variant="outline-danger"><FaTrashAlt/></Button></td>
+          </>
+        ) : (
+      <></>)}
+    </tr>
 
-            {new Date(workorder.createdAt).toLocaleDateString('en-US')}
-            {<h2>{workorder.clientName}</h2>}
-
-            {<p>Work Order Number: {workorder.id}</p>}
-
-            {<p>Tech Name: {workorder.techName}</p>}
-
-            {<p>Start Time: {workorder.startTime}</p>}
-
-            {<p>End Time: {workorder.endTime}</p>}
-
-            {workorder.milesTraveled > 0 ? (<p>Miles traveled: {workorder.milesTraveled}</p>) : (<></>)}
-
-            {workorder.timeTraveled > 0 ? (<p>Time traveled: {workorder.timeTraveled}</p>) : (<></>)}
-
-            {workorder.changeNotes ? (<p>Change Notes: {workorder.changeNotes}</p>) : (<></>)}
-
-            {<p>Job Notes: {workorder.jobNotes}</p>}
-
-            {workorder.verifyNetwork ? (<p>Verify Network: Yes</p>) : (<p>Verify Network: No</p>)}
-
-            {workorder.verifyNetwork ? (<p>Verify WiFi: Yes</p>) : (<></>)}
-
-            {workorder.verifyNetwork ? (<p>Up Speed: {workorder.speedUp}</p>) : (<></>)}
-
-            {workorder.verifyNetwork ? (<p>Down Speed: {workorder.speedDown}</p>) : (<></>)}
-            
-        </div>
-    </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header>
+          <Modal.Title><b>Workorder # {workorder.id}</b></Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p><b>Made By:</b> {workorder.techName}</p>
+          <p><b>Client:</b> {workorder.clientName}</p>
+          <p><b>Miles Traveled:</b> {workorder.milesTraveled}</p>
+          <p><b>Time Traveled:</b> {workorder.timeTraveled}</p>
+          <p><b>Start Time:</b> {workorder.startTime}</p>
+          <p><b>End Time:</b> {workorder.endTime}</p>
+          <p><b>Change Notes:</b> {workorder.changeNotes}</p>
+          <p><b>Job Notes:</b> {workorder.jobNotes}</p>
+          <p><b>Verified Network:</b> {workorder.verifyNetwork ? ('Yes') : ('No')}</p>
+          <p><b>Verified WiFi:</b> {workorder.verifyWifi ? ('Yes') : ('No')}</p>
+          <p><b>ISP Speed Up:</b> {workorder.speedUp}</p>
+          <p><b>ISP Speed Dowm:</b> {workorder.speedDown}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+</>
     )
 }
 

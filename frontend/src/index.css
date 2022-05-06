@@ -159,10 +159,6 @@ h3 {
   justify-content: center;
 }
 
-.btn svg {
-  margin-right: 8px;
-}
-
 .btn-reverse {
   background: #fff;
   color: #000;
@@ -175,6 +171,10 @@ h3 {
 
 .btn:hover {
   transform: scale(0.98);
+}
+
+.table {
+  vertical-align: baseline !important;
 }
 
 .loadingSpinnerContainer {

@@ -69,11 +69,33 @@ function Dashboard() {
     <WorkorderSortForm/>
     <section className="content">
       {tech && workorders.length > 0 ? (
-        <div className="workorders">
-          {workorders.map((workorder) => (
-            <WorkorderItem key={workorder.id} workorder={workorder} tech={tech}/>
-          ))}
-        </div>
+        <table className="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Work Order #</th>
+              <th scope="col">Date Created</th>
+              <th scope="col">Client</th>
+              <th>View</th>
+              {(tech.role === 'admin'
+              ) ? (
+                <>
+                <th scope="col">Tech</th>
+                <th scope="col">Delete</th>
+                </>
+              ) : (
+            <></>)}
+            </tr>
+          </thead>
+          {workorders ? (
+            <tbody>
+              {workorders.map((workorder) => (
+                <WorkorderItem key={workorder.id} workorder={workorder} tech={tech}/>
+              ))}
+            </tbody>
+          ) : (
+            <></>
+          )}
+        </table>
       ) : (
         <h3>There are no Workorders to display</h3>)}
     </section>
