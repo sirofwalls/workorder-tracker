@@ -3,6 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Header from './components/Header';
+import Footer from './components/Footer';
 import CreateWorkorder from './pages/CreateWorkorder';
 import Clients from './pages/Clients';
 import Workorders from './pages/Workorders'
@@ -14,7 +15,7 @@ function App() {
   return (
     <>
     <Router>
-    <div className='container'>
+    <div className='container main'>
       <Header />
       <Routes>
         <Route path='/' exact element={<Dashboard/>}/>
@@ -24,6 +25,7 @@ function App() {
         <Route path='/workorders' element={<Workorders/>}/>
         <Route path='/clients' element={<Clients/>}/>
       </Routes>
+      <Footer/>
     </div>
     </Router>
     <ToastContainer />
