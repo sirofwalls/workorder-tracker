@@ -2,8 +2,8 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import Header from './components/App/Header';
+import Footer from './components/App/Footer';
 import CreateWorkorder from './pages/CreateWorkorder';
 import Clients from './pages/Clients';
 import Workorders from './pages/Workorders'

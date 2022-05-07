@@ -1,6 +1,6 @@
 import {FaTrashAlt, FaEye} from 'react-icons/fa'
 import {useDispatch} from 'react-redux'
-import {deleteWorkorder} from '../features/workorders/workorderSlice'
+import {deleteWorkorder} from '../../features/workorders/workorderSlice'
 import { confirmAlert } from 'react-confirm-alert'; // Import Confirm Modal
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css for Confirm Delete
 import Button from 'react-bootstrap/Button'

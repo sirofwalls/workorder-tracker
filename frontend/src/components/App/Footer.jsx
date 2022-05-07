@@ -1,5 +1,5 @@
 import {Link} from 'react-router-dom'
-import logo from '../assets/pictures/BTB-logo.png'
+import logo from '../../assets/pictures/BTB-logo.png'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
 

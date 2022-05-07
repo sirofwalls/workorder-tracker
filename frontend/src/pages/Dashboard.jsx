@@ -1,8 +1,10 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import Spinner from '../components/Spinner'
+import Spinner from '../components/App/Spinner'
 import {toast} from 'react-toastify'
+import AdminDashboard from '../components/Dashboards/AdminDashboard'
+import UserDashboard from '../components/Dashboards/UserDashboard'
 // import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 
 function Dashboard() {
@@ -20,9 +22,6 @@ function Dashboard() {
       toast.error(message)
     }
 
-    // return () => {
-    //   dispatch(reset())
-    // }
   }, [tech, navigate, isError, message, dispatch])
 
   if (isLoading) {
@@ -34,8 +33,13 @@ function Dashboard() {
     <section className="heading">
       <h1>Welcome {tech && tech.name}</h1>
       <p>Workorder App Dashboard</p>
-      <p>Nothing here yet... Coming soon&trade;</p>
+      {/* <p>Nothing here yet... Coming soon&trade;</p> */}
     </section>
+    {tech && tech.role === 'admin' ? (
+      <AdminDashboard/>
+    ) : (
+      <UserDashboard/>
+    )}
     </>
   )
 }

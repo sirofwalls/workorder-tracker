@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {useDispatch} from 'react-redux'
-import {createClient} from '../features/clients/clientSlice'
+import {createClient} from '../../features/clients/clientSlice'
 
 function ClientForm() {
     const dispatch = useDispatch()

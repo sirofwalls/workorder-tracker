@@ -1,11 +1,11 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import ClientForm from '../components/ClientForm'
 import {toast} from 'react-toastify'
-import Spinner from '../components/Spinner'
+import Spinner from '../components/App/Spinner'
 import { getClients, reset } from '../features/clients/clientSlice'
-import ClientItem from '../components/ClientItem'
+import ClientForm from '../components/Clients/ClientForm'
+import ClientItem from '../components/Clients/ClientItem'
 
 function Clients() {
   const navigate = useNavigate()

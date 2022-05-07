@@ -102,17 +102,23 @@ const editTech = asyncHandler(async (req, res) => {
     }
     
     // Confirm that the tech making the change has admin role
-    const adminTech = req.tech
+    const selfTech = req.tech
 
     // Double check that there is a user
-    if (!adminTech) {
+    if (!selfTech) {
         res.status(401)
         throw new Error('Tech not found')
     }
 
 
-    // Make sure the user is allowed to edit the workorder
-    if (adminTech.techRole.toString() !== 'admin') {
+    // Make sure the user is allowed to edit the tech
+    if (selfTech.techRole.toString() !== 'admin' || selfTech.id !== editTech.id) {
+        res.status(401)
+        throw new Error('You do not have permission to make this change.')
+    }
+
+    // Only an Admin should be able to change the tech roles
+    if (req.body.techRole && selfTech.techRole.toString() !== 'admin') {
         res.status(401)
         throw new Error('You do not have permission to make this change.')
     }
@@ -121,7 +127,8 @@ const editTech = asyncHandler(async (req, res) => {
     const updateEmail = req.body.email || editTech.email
     const updateTechRole = req.body.techRole || editTech.techRole
 
-    const updatedTech = await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, id])
+
+    await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, id])
 
     const dbSearch = await connectDB.promise().query(`SELECT * FROM users WHERE id=?`, [id])
     

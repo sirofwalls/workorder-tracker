@@ -1,9 +1,9 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
-import WorkorderForm from '../components/WorkorderForm'
+import WorkorderForm from '../components/Workorders/WorkorderForm'
 import {toast} from 'react-toastify'
-import Spinner from '../components/Spinner'
+import Spinner from '../components/App/Spinner'
 import { getWorkorders, reset } from '../features/workorders/workorderSlice'
 import { getClients} from '../features/clients/clientSlice'
 

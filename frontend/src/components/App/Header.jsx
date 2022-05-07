@@ -1,10 +1,10 @@
 import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows, FaList} from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import {logout, reset} from '../features/auth/authSlice'
+import {logout, reset} from '../../features/auth/authSlice'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import logo from '../assets/pictures/BTB-logo.png'
+import logo from '../../assets/pictures/BTB-logo.png'
 
 function Header() {
 
