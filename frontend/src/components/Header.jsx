@@ -2,6 +2,8 @@ import {FaSignInAlt, FaSignOutAlt, FaUser, FaFileInvoice, FaPeopleArrows, FaList
 import {Link, useNavigate} from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../features/auth/authSlice'
+import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav'
 import logo from '../assets/pictures/BTB-logo.png'
 
 function Header() {
@@ -20,72 +22,61 @@ function Header() {
         navigate('/')
     }
 
-    // Link to navigate to Workorder page... there should be a better way
-    const workorderCreatePage = () => {
-        navigate('/create-workorder')
-    }
-    // Link to navigate to Clients page... there should be a better way
-    const clientsPage = () => {
-        navigate('/clients')
-    }
-    // Link to navigate to Workorder List page... again, there should be a better way
-    const workorderListPage = () => {
-        navigate('/workorders')
-    }
-    // Link to navigate to Register page... again, again, there should be a better way
-    const registerPage = () => {
-        navigate('/register')
-    }
-
     return (
-    <header className='header'>
-        <div className="logo">
-            <Link to='/'><img src={logo} alt="Beyond the Bit Logo" /> </Link>
-        </div>
-        <ul>
+    <Navbar expand='lg'>
+        <Navbar.Brand>
+        <Link to='/'><img src={logo} alt="Beyond the Bit Logo" /></Link>
+        </Navbar.Brand>
+
+        <Navbar.Toggle />
+
+        <Navbar.Collapse>
+            <Nav className='justify-content-end'>
             {tech ? (
                 <>
-                <li>
-                    <button className='btn' onClick={clientsPage}>
+                <Nav.Link>
+                    <button className='btn' onClick={() => {navigate('/clients')}}>
                         <FaPeopleArrows /> Clients
                     </button>
-                </li>
-                <li>
-                    <button className='btn' onClick={workorderCreatePage}>
+                </Nav.Link>
+                <Nav.Link>
+                    <button className='btn' onClick={() => {navigate('/create-workorder')}}>
                         <FaFileInvoice /> Create Workorder
                     </button>
-                </li>
-                <li>
-                    <button className='btn' onClick={workorderListPage}>
+                </Nav.Link>
+                <Nav.Link>
+                    <button className='btn' onClick={() => {navigate('/workorders')}}>
                         <FaList/> View Workorders
                     </button>
-                </li>
+                </Nav.Link>
                 {tech.role === 'admin' ? (
-                    <li>
-                    <button className='btn' onClick={registerPage}>
+                    <Nav.Link>
+                    <button className='btn' onClick={() => {navigate('/register')}}>
                         <FaUser /> Add User
                     </button>
-                    </li>
+                    </Nav.Link>
                 ) : (<></>)}
-                <li>
+                <Nav.Link>
                     <button className='btn btn-danger' onClick={onLogout}>
                         <FaSignOutAlt /> Log Out
                     </button>
-                </li>
+                </Nav.Link>
                 </>
-                
-            ) : (
-                <>
-                <li>
-                    <Link to='/login'>
-                        <FaSignInAlt /> Login
-                    </Link>
-                </li>
-                </>
-            )}
-        </ul>
-    </header>
-  )
+                ) : (
+                    <>
+                    <Nav.Link>
+                        <Link to='/login'>
+                            <FaSignInAlt /> Login
+                        </Link>
+                    </Nav.Link>
+                    </>
+                )}
+            </Nav>
+        </Navbar.Collapse>
+
+        
+    </Navbar>
+    )
 }
 
 export default Header

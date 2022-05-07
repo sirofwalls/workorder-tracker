@@ -74,6 +74,7 @@ const createWorkorder = asyncHandler(async (req, res) => {
             }
         })
 
+        // Actual mail being sent. Text option is required for compatability with non html clients
         await transport.sendMail({
             from: process.env.MAIL_FROM,
             to: process.env.MAIL_TO,
@@ -103,7 +104,23 @@ const createWorkorder = asyncHandler(async (req, res) => {
                     </div>
                 </body>
             </html>
-            `
+            `,
+            text: `
+                Work Order Details: \n\n
+                Work Order Number: ${getSingle.techId}\n
+                Tech Name: ${getSingle.techName}\n
+                Client: ${getSingle.clientName}\n
+                Client Number: ${getSingle.clientNumber}\n
+                Start Time: ${getSingle.startTime}\n
+                End Time: ${getSingle.endTime}\n
+                Miles Traveled: ${getSingle.milesTraveled}\n
+                Time Travsled: ${getSingle.timeTraveled}\n
+                Internal Change Notes: ${getSingle.changeNotes ? (`${getSingle.changeNotes}`) : ('N/A')}\n
+                Notes for work done on job: ${getSingle.jobNotes ? (`${getSingle.jobNotes}`) : ('N/A')}\n
+                Verified Network?: ${getSingle.verifyNetwork ? ('Yes') : ('No')}\n
+                Verified WiFi?: ${getSingle.verifyWifi ? ('Yes') : ('No')}\n
+                ISP Speed Up: ${getSingle.speedUp}\n
+                ISP Speed Down: ${getSingle.speedDown}`
         })
 
         res.status(200).json(getSingle)
