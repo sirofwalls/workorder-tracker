@@ -2,7 +2,7 @@ import React from 'react'
 
 function UserDashboard() {
   return (
-    <div>UserDashboard</div>
+    <div>User Dashboard... more info and details coming soon... sorry!</div>
   )
 }
 
