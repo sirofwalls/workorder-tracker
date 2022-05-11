@@ -13,6 +13,7 @@ function Dashboard() {
   const dispatch = useDispatch()
 
   const {tech} = useSelector((state) => state.auth)
+  const {users} = useSelector((state) => state.auth)
   const {workorders, isLoading, isError, message} = useSelector((state) => state.workorders)
 
   useEffect(() => {
@@ -47,7 +48,7 @@ function Dashboard() {
       <p>Workorder App Dashboard</p>
     </section>
     {tech && tech.role === 'admin' ? (
-      <AdminDashboard chartData={chartData} tech={tech}/>
+      <AdminDashboard chartData={chartData} tech={tech} users={users}/>
     ) : (
       <UserDashboard/>
     )}

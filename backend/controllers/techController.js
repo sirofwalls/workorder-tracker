@@ -79,10 +79,21 @@ const loginTech = asyncHandler( async (req, res) => {
 // Route: POST /api/v1/techs/me
 // Access: Private
 const getTech = asyncHandler( async (req, res) => {
-    const results = await connectDB.promise().query(`SELECT * FROM users`)
+    // If admin, then get all the techs information
+    if (req.tech.techRole === 'admin') {
+        const results = await connectDB.promise().query(`SELECT id, techName, email, techRole FROM users`)
 
-    const tech = results[0]
-    res.status(200).json(tech)
+        const tech = results[0]
+        
+        res.status(200).json(tech)
+    } else{
+        id = req.tech.id
+        const results = await connectDB.promise().query(`SELECT id, techName, email, techRole FROM users WHERE id=?`, [id])
+
+        const tech = results[0]
+        
+        res.status(200).json(tech)
+    }
 })
 
 // Decription: Edit the tech
