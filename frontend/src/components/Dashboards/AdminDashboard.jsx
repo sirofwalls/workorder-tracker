@@ -73,18 +73,22 @@ function AdminDashboard({chartData, tech, users}) {
           </tr>
         </thead>
         <tbody>
-          {users.map((item) => (
-            <tr>
-              <td>{item.id}</td>
-              <td>{item.techName}</td>
-              <td>{item.techRole}</td>
-              <td>
-                <Button variant="outline-warning">
-                  <FaRegEdit/>
-                </Button>
-              </td>
-            </tr>
-          ))}
+          {users && users.length > 0 ? (
+            <>
+            {users.map((item) => (
+              <tr>
+                <td>{item.id}</td>
+                <td>{item.techName}</td>
+                <td>{item.techRole}</td>
+                <td>
+                  <Button variant="outline-warning">
+                    <FaRegEdit/>
+                  </Button>
+                </td>
+              </tr>
+            ))}
+            </>
+          ) : (<></>)}
         </tbody>
         </table>
       </section> 
