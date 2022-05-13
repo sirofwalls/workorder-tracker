@@ -40,6 +40,22 @@ const getUsers = async (token) => {
     return response.data
 }
 
+// edit user in the Database
+const editUser = async (id, techData, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const response = await axios.put(API_URL + 'edit/' + id, techData, config)
+
+    if (response.data) {
+        localStorage.setItem('tech', JSON.stringify(response.data))
+    }
+
+    return response.data
+}
+
 //Log out the user
 const logout = () => {
     localStorage.removeItem('tech')
@@ -49,6 +65,7 @@ const authService = {
     register,
     logout,
     login,
+    editUser,
     getUsers
 }
 

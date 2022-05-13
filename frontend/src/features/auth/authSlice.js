@@ -1,7 +1,7 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
 import authService from './authService'
 
-// Get tech form local storage
+// Get tech from local storage
 const tech = JSON.parse(localStorage.getItem('tech'))
 
 const initialState = {
@@ -42,6 +42,21 @@ export const getUsers = createAsyncThunk('auth/getAll', async (_, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
         return await authService.getUsers(token)
+    } catch (error) {
+        // Sends error as message if there was a problem registering the user
+        const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
+        return thunkAPI.rejectWithValue(message)
+    }
+})
+
+// Edit the user
+export const editUser = createAsyncThunk('auth/editUser', async (techData, thunkAPI) => {
+    try {
+        // Uses functions from authService.js
+        const token = await thunkAPI.getState().auth.tech.token
+        const id = await thunkAPI.getState().auth.tech.id
+
+        return await authService.editUser(id, techData, token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
         const message = (error.response && error.response.data && error.response.data.message) || error.message || error.toString()
@@ -112,6 +127,21 @@ export const authSlice = createSlice({
                 state.isLoading = false
                 state.isError = true
                 state.message = action.payload
+            })
+            .addCase(editUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(editUser.fulfilled, (state, action) => {
+                state.isLoading = false
+                state.isSuccess = true
+                state.tech = action.payload
+                state.message = action.payload
+            })
+            .addCase(editUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.isError = true
+                state.message = action.payload
+                state.tech = null
             })
     }
 })

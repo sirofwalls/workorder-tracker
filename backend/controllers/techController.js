@@ -134,19 +134,37 @@ const editTech = asyncHandler(async (req, res) => {
         throw new Error('You do not have permission to make this change.')
     }
 
-    const updateName = req.body.techName || editTech.techName
-    const updateEmail = req.body.email || editTech.email
-    const updateTechRole = req.body.techRole || editTech.techRole
+    if (req.body.password && (selfTech.id === editTech.id)) {
+        const {password} = req.body
+        const salt = await bcrypt.genSalt(12)
+
+        const updatePassword = await bcrypt.hash(password, salt)
+        const updateName = req.body.name || editTech.techName
+        const updateEmail = req.body.email || editTech.email
+        const updateTechRole = req.body.techRole || editTech.techRole
+
+        await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ?, password=? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, updatePassword, id])
+    } else{
+        const updateName = req.body.name || editTech.techName
+        const updateEmail = req.body.email || editTech.email
+        const updateTechRole = req.body.techRole || editTech.techRole
 
 
-    await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, id])
+        await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, id])
+    }
 
     const dbSearch = await connectDB.promise().query(`SELECT * FROM users WHERE id=?`, [id])
     
     const results = dbSearch[0][0]
     const {id: _id, techName, email, techRole} = results
 
-    res.status(200).json({id, techName, email, techRole})
+    res.status(200).json({
+        id,
+        name: techName,
+        role: techRole,
+        email,
+        token: generateToken(id)
+    })
 })
 
 // Generate JWT
