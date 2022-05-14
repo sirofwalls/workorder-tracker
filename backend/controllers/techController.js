@@ -15,8 +15,11 @@ const registerTech = asyncHandler( async (req, res) => {
         throw new Error('Please add all fields')
     }
 
+    // Make sure the email is lower case
+    const lowerEmail = email.toLowerCase()
+
     // Check to see if the Tech already exists
-    const techExists = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, email)
+    const techExists = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [lowerEmail])
 
     if (techExists[0].length > 0) {
         res.status(400)
@@ -28,9 +31,9 @@ const registerTech = asyncHandler( async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt)
 
     // Create the Tech
-    await connectDB.promise().query(`INSERT INTO users (techName, email, password) VALUES(?, ?, ?)`, [techName, email, hashedPassword])
+    await connectDB.promise().query(`INSERT INTO users (techName, email, password) VALUES(?, ?, ?)`, [techName, lowerEmail, hashedPassword])
 
-    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [email])
+    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [lowerEmail])
 
     const tech = results[0][0]
 
@@ -54,9 +57,10 @@ const registerTech = asyncHandler( async (req, res) => {
 // Access: Public
 const loginTech = asyncHandler( async (req, res) => {
     const {email, password} = req.body
+    const lowerEmail = email.toLowerCase()
 
     // Check for user email
-    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [email])
+    const results = await connectDB.promise().query(`SELECT * FROM users WHERE email=?`, [lowerEmail])
     
     const tech = results[0][0]
 
@@ -121,9 +125,8 @@ const editTech = asyncHandler(async (req, res) => {
         throw new Error('Tech not found')
     }
 
-
     // Make sure the user is allowed to edit the tech
-    if (selfTech.techRole.toString() !== 'admin' || selfTech.id !== editTech.id) {
+    if ((selfTech.techRole.toString() !== 'admin') && (selfTech.id !== editTech.id)) {
         res.status(401)
         throw new Error('You do not have permission to make this change.')
     }
@@ -140,13 +143,13 @@ const editTech = asyncHandler(async (req, res) => {
 
         const updatePassword = await bcrypt.hash(password, salt)
         const updateName = req.body.name || editTech.techName
-        const updateEmail = req.body.email || editTech.email
+        const updateEmail = req.body.email.toLowerCase() || editTech.email
         const updateTechRole = req.body.techRole || editTech.techRole
 
         await connectDB.promise().query(`UPDATE users SET techName = ? , email = ?, techRole = ?, password=? WHERE users.id = ?`, [updateName, updateEmail, updateTechRole, updatePassword, id])
     } else{
         const updateName = req.body.name || editTech.techName
-        const updateEmail = req.body.email || editTech.email
+        const updateEmail = req.body.email.toLowerCase() || editTech.email
         const updateTechRole = req.body.techRole || editTech.techRole
 
 
@@ -158,13 +161,26 @@ const editTech = asyncHandler(async (req, res) => {
     const results = dbSearch[0][0]
     const {id: _id, techName, email, techRole} = results
 
-    res.status(200).json({
-        id,
-        name: techName,
-        role: techRole,
-        email,
-        token: generateToken(id)
-    })
+    // This is the payload returned to the slice.
+    if (selfTech.id === editTech.id) {
+        res.status(200).json({
+            id,
+            name: techName,
+            role: techRole,
+            email,
+            token: generateToken(id)
+        })
+    } else {
+        // Need to set the selfTech options in case an admin edits a user so it can keep the same state
+        res.status(200).json({
+            id: selfTech.id,
+            name: selfTech.techName,
+            role: selfTech.techRole,
+            email: selfTech.email,
+            token: req.headers.authorization.split(' ')[1]
+        })
+    }
+    
 })
 
 // Generate JWT

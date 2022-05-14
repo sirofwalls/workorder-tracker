@@ -50,7 +50,7 @@ function Dashboard() {
     {tech && tech.role === 'admin' ? (
       <AdminDashboard chartData={chartData} tech={tech} users={users}/>
     ) : (
-      <UserDashboard/>
+      <UserDashboard chartData={chartData} tech={tech}/>
     )}
     </>
   )

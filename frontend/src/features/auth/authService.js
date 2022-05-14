@@ -47,13 +47,23 @@ const editUser = async (id, techData, token) => {
             Authorization: `Bearer ${token}`
         }
     }
-    const response = await axios.put(API_URL + 'edit/' + id, techData, config)
+    
+    if (techData.editTech) {
+        const changeTech = techData.editTech
 
-    if (response.data) {
-        localStorage.setItem('tech', JSON.stringify(response.data))
+        const response = await axios.put(API_URL + 'edit/' + changeTech, techData, config)
+    
+        return response.data
+    } else {
+        
+        const response = await axios.put(API_URL + 'edit/' + id, techData, config)
+    
+        if (response.data) {
+            localStorage.setItem('tech', JSON.stringify(response.data))
+        }
+    
+        return response.data
     }
-
-    return response.data
 }
 
 //Log out the user

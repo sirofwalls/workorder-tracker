@@ -41,6 +41,7 @@ export const login = createAsyncThunk('auth/login', async (tech, thunkAPI) => {
 export const getUsers = createAsyncThunk('auth/getAll', async (_, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.tech.token
+        
         return await authService.getUsers(token)
     } catch (error) {
         // Sends error as message if there was a problem registering the user
