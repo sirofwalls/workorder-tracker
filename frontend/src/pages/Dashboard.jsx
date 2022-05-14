@@ -43,15 +43,19 @@ function Dashboard() {
 
   return (
     <>
-    <section className="heading">
-      <h1>Welcome {tech && tech.name}</h1>
-      <p>Workorder App Dashboard</p>
-    </section>
-    {tech && tech.role === 'admin' ? (
-      <AdminDashboard chartData={chartData} tech={tech} users={users}/>
-    ) : (
-      <UserDashboard chartData={chartData} tech={tech}/>
-    )}
+    {tech ? (
+      <>
+      <section className="heading">
+        <h1>Welcome {tech && tech.name}</h1>
+        <p>Workorder App Dashboard</p>
+      </section>
+      {tech && tech.role === 'admin' ? (
+        <AdminDashboard chartData={chartData} tech={tech} users={users}/>
+      ) : (
+        <UserDashboard chartData={chartData} tech={tech}/>
+      )}
+      </>
+    ) : (<></>)}
     </>
   )
 }

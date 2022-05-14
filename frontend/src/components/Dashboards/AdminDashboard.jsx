@@ -5,8 +5,6 @@ import {reset} from '../../features/auth/authSlice'
 import {useSelector, useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import UserList from './UserList'
-import Button from 'react-bootstrap/Button'
-import {FaRegEdit} from 'react-icons/fa'
 
 function AdminDashboard({chartData, tech, users}) {
   const dispatch = useDispatch()
@@ -20,6 +18,9 @@ function AdminDashboard({chartData, tech, users}) {
   const handleShow = () => setSelfShow(true);
 
   useEffect(() => {
+    if (!tech) {
+      navigate('/login')
+    }
 
     return () => {
       dispatch(reset())
