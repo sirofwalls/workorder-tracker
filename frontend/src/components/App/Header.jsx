@@ -65,9 +65,9 @@ function Header() {
                 ) : (
                     <>
                     <Nav.Link>
-                        <Link to='/login'>
+                        <button className='btn' onClick={() => {navigate('/login')}}>
                             <FaSignInAlt /> Login
-                        </Link>
+                        </button>
                     </Nav.Link>
                     </>
                 )}

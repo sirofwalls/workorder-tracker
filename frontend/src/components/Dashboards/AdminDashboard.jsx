@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect} from 'react'
 import TicketChart from './TicketChart'
 import UserInfo from './UserInfo'
 import {reset} from '../../features/auth/authSlice'
@@ -11,11 +11,6 @@ function AdminDashboard({chartData, tech, users}) {
   const navigate = useNavigate()
 
   const {isSuccess} = useSelector((state) => state.auth)
-
-  const [selfShow, setSelfShow] = useState(false);
-
-  const handleClose = () => setSelfShow(false);
-  const handleShow = () => setSelfShow(true);
 
   useEffect(() => {
     if (!tech) {
