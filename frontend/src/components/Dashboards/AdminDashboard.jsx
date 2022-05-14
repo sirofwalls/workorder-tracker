@@ -28,7 +28,6 @@ function AdminDashboard({chartData, tech, users}) {
 
   return (
     <>
-    <p><i>"Current Users" edit buttons do not work yet</i></p>
     <div className="row justify-content-around dash-row">
       <UserInfo tech={tech}/>
     </div> 
