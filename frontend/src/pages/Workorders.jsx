@@ -38,6 +38,9 @@ function Dashboard() {
   // Takes the workorders from the state and formats the date for the CSV
   const data = workorders.map(row => ({...row, createdAt: new Date(row.createdAt).toLocaleDateString('en-US')}))
 
+  // Need this in order to sort the workorders by newest first
+  const workorderList = [...workorders]
+
   useEffect(() => {
     if (!tech) {
       navigate('/login')
@@ -62,7 +65,7 @@ function Dashboard() {
     <>
     <section className="heading">
       {tech && workorders.length > 0 ? (
-      <CSVLink data={data} headers={headers} filename={"btb-workorders.csv"} target="_blank">
+      <CSVLink data={data} headers={headers} filename={`btb_workorders_${new Date().toLocaleDateString('en-US')}.csv`} target="_blank">
         Download CSV
       </CSVLink>) : <></>}
     </section>
@@ -88,7 +91,7 @@ function Dashboard() {
           </thead>
           {workorders ? (
             <tbody>
-              {workorders.map((workorder) => (
+              {workorderList.sort((a, b) => a.id < b.id ? 1 : -1).map((workorder) => (
                 <WorkorderItem key={workorder.id} workorder={workorder} tech={tech}/>
               ))}
             </tbody>
