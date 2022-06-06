@@ -107,7 +107,7 @@ const UserList = ({user, tech}) => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="techRole">Tech Role</label>
-                    <select onChange={onSelect} value={user.techRole}>
+                    <select onChange={onSelect} value={techRole}>
                         {userRoles.map((role) => (
                             <option key={role.id} name={role.techRole} value={role.techRole}>{role.techRole}</option>
                         ))}
