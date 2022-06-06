@@ -54,6 +54,14 @@ function Login() {
         dispatch(login(techData))
     }
 
+    const guestCredentials = () => {
+        setFormData((prevState) => ({
+            ...prevState,
+            email: 'guest@example.com',
+            password: 'Guest123SnC^&'
+        }))
+    }
+
     if (isLoading) {
         return <Spinner />
     }
@@ -73,7 +81,10 @@ function Login() {
                     <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter a password' onChange={onChange} />
                 </div>
                 <div className="form-group">
-                    <button type='submit' className='btn btn-block btn-dark'>Register</button>
+                    <button type='submit' className='btn btn-block btn-dark'>Log In</button>
+                </div>
+                <div className="form-group">
+                    <button type='button' onClick={guestCredentials} className='btn btn-block btn-guest'>Get Guest Credentials</button>
                 </div>
             </form>
         </section>

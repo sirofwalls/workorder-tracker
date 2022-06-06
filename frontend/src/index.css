@@ -197,6 +197,10 @@ h3 {
   transform: scale(0.98);
 }
 
+.btn-guest {
+  background-color: #ec6d6d !important;
+}
+
 .table {
   vertical-align: baseline !important;
 }
