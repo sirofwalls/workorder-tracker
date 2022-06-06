@@ -1,8 +1,6 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-CREATE DATABASE IF NOT EXISTS `workorder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `workorder`;
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
@@ -22,7 +20,8 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `users` (`id`, `techName`, `email`, `password`, `techRole`, `createdAt`, `updated_at`) VALUES
-(1, 'Admin', 'admin@email.com', '$2a$12$GeyyumGsCSBQWKTegtBgouas4jY9txnYo7nc/PEI3QgbuyekYRvpy', 'admin', '2022-05-01 18:54:02', '2022-05-02 15:25:35');
+(1, 'Admin', 'admin@email.com', '$2a$12$rVzgyK5xyMGJjgCTQtRZ..HkLq6ujsytcjruIVQKl4rfYvNVAxnPu', 'admin', '2022-05-01 18:54:02', '2022-06-06 12:04:09'),
+(6, 'Guest', 'guest@example.com', '$2a$12$lzl3hryN9V8B2e/6XzgPqOGPgvEMV1Ytb5PsFz.dFoA2GlRjogZWO', 'admin', '2022-06-06 12:02:10', '2022-06-06 12:09:52');
 
 CREATE TABLE `workorders` (
   `id` int(11) NOT NULL,
@@ -66,7 +65,7 @@ ALTER TABLE `clients`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 ALTER TABLE `workorders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
