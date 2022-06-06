@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {logout, reset} from '../../features/auth/authSlice'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
-import logo from '../../assets/pictures/BTB-logo.png'
+import logo from '../../assets/pictures/logo.png'
 
 function Header() {
 
@@ -25,7 +25,7 @@ function Header() {
     return (
     <Navbar expand='lg'>
         <Navbar.Brand>
-        <Link to='/'><img src={logo} alt="Beyond the Bit Logo" /></Link>
+        <Link to='/'><img src={logo} alt="Logo" style={{maxWidth: "150px"}} /></Link>
         </Navbar.Brand>
 
         <Navbar.Toggle />

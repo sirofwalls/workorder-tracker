@@ -65,7 +65,7 @@ function Dashboard() {
     <>
     <section className="heading">
       {tech && workorders.length > 0 ? (
-      <CSVLink data={data} headers={headers} filename={`btb_workorders_${new Date().toLocaleDateString('en-US')}.csv`} target="_blank">
+      <CSVLink data={data} headers={headers} filename={`workorders_${new Date().toLocaleDateString('en-US')}.csv`} target="_blank">
         Download CSV
       </CSVLink>) : <></>}
     </section>
