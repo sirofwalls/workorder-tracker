@@ -1,8 +1,8 @@
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
-CREATE DATABASE IF NOT EXISTS `btb_workorder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `btb_workorder`;
+CREATE DATABASE IF NOT EXISTS `workorder` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `workorder`;
 
 CREATE TABLE `clients` (
   `id` int(11) NOT NULL,
